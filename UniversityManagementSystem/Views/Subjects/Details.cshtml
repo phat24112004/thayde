@@ -1,0 +1,33 @@
+﻿@model UniversityManagementSystem.Models.Subject
+
+@{
+    ViewData["Title"] = "Chi tiết Môn học";
+}
+
+<div class="container pt-4 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="card shadow border-0">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0"><i class="fa-solid fa-book-open-reader me-2"></i>Thông tin Môn học</h4>
+                </div>
+                <div class="card-body p-4 text-center">
+
+                    <i class="fa-solid fa-book fa-4x text-info mb-3 opacity-50"></i>
+
+                    <h2 class="fw-bolder text-primary mb-1">@Html.DisplayFor(model => model.SubjectName)</h2>
+                    <p class="fs-5 text-muted mb-4">Mã môn: <span class="fw-bold text-dark">@Html.DisplayFor(model => model.SubjectId)</span></p>
+
+                </div>
+                <div class="card-footer bg-light text-end p-3">
+                    <a asp-action="Index" class="btn btn-secondary me-2">
+                        <i class="fa-solid fa-arrow-left"></i> Quay lại danh sách
+                    </a>
+                    <a asp-action="Edit" asp-route-id="@Model?.SubjectId" class="btn btn-warning fw-bold">
+                        <i class="fa-solid fa-pen-to-square"></i> Cập nhật
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

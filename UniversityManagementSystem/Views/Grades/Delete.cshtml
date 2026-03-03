@@ -1,0 +1,70 @@
+﻿@model UniversityManagementSystem.Models.Grade
+
+@{
+    ViewData["Title"] = "Xóa Điểm";
+}
+
+<div class="container pt-5 pb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+
+            <div class="mb-4">
+                <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-danger bg-opacity-10 text-danger" style="width: 90px; height: 90px;">
+                    <i class="fa-solid fa-eraser fa-3x"></i>
+                </div>
+            </div>
+
+            <h2 class="fw-bolder mb-3">Hủy kết quả điểm?</h2>
+            <p class="text-muted fs-5 mb-4">
+                Hành động này <strong class="text-danger">không thể hoàn tác</strong>. Điểm thi môn
+                <strong class="text-dark">@Model.Subject?.SubjectName</strong> của sinh viên
+                <strong class="text-dark">@Model.Student?.FullName</strong> sẽ bị xóa sạch.
+            </p>
+
+            <div class="card shadow-lg border-danger border-opacity-50 text-start">
+                <div class="card-body p-4 bg-light rounded">
+                    <form asp-action="Delete">
+                        <input type="hidden" asp-for="GradeId" />
+
+                        <div class="mb-4">
+                            <label class="form-label text-muted">
+                                Vui lòng nhập lại số điểm <span class="user-select-all text-danger fw-bold bg-danger bg-opacity-10 px-2 py-1 rounded border border-danger border-opacity-25">@Model.Score</span> để xác nhận xóa:
+                            </label>
+                            <input type="text" id="confirmInputScore" class="form-control form-control-lg border-danger border-opacity-50" autocomplete="off" placeholder="Nhập điểm số..." />
+                        </div>
+
+                        <div class="d-grid gap-3">
+                            <button type="submit" id="btnDeleteGrade" class="btn btn-danger btn-lg fw-bold shadow-sm" disabled>
+                                <i class="fa-solid fa-trash-can me-2"></i> Xác nhận Hủy Điểm
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary btn-lg">
+                                Hủy và Quay lại
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const confirmInput = document.getElementById('confirmInputScore');
+        const btnDelete = document.getElementById('btnDeleteGrade');
+        // Ép kiểu điểm số sang chuỗi để so sánh
+        const targetScore = "@Model.Score.ToString()";
+
+        confirmInput.addEventListener('input', function() {
+            // Thay dấu phẩy thành dấu chấm (hoặc ngược lại) để tránh lỗi gõ phím của người dùng
+            let val = this.value.trim().replace(',', '.');
+            let target = targetScore.replace(',', '.');
+
+            if (val === target) {
+                btnDelete.removeAttribute('disabled');
+            } else {
+                btnDelete.setAttribute('disabled', 'true');
+            }
+        });
+    </script>
+}

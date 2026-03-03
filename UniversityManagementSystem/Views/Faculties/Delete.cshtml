@@ -1,0 +1,64 @@
+﻿@model UniversityManagementSystem.Models.Faculty
+
+@{
+    ViewData["Title"] = "Xác nhận Xóa Khoa";
+}
+
+<div class="container pt-5 pb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+
+            <div class="mb-4">
+                <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-danger bg-opacity-10 text-danger" style="width: 90px; height: 90px;">
+                    <i class="fa-solid fa-triangle-exclamation fa-3x"></i>
+                </div>
+            </div>
+
+            <h2 class="fw-bolder mb-3">Bạn chắc chắn muốn xóa?</h2>
+            <p class="text-muted fs-5 mb-4">
+                Hành động này <strong class="text-danger">không thể hoàn tác</strong>. Dữ liệu của khoa
+                <strong class="text-dark fs-4">@Model.FacultyName</strong> sẽ bị xóa vĩnh viễn khỏi hệ thống.
+            </p>
+
+            <div class="card shadow-lg border-danger border-opacity-50 text-start">
+                <div class="card-body p-4 bg-light rounded">
+                    <form asp-action="Delete" id="deleteForm">
+                        <input type="hidden" asp-for="FacultyId" />
+
+                        <div class="mb-4">
+                            <label class="form-label text-muted">Vui lòng nhập <span class="user-select-all text-danger fw-bold bg-danger bg-opacity-10 px-2 py-1 rounded border border-danger border-opacity-25">@Model.FacultyName</span> để xác nhận:</label>
+                            <input type="text" id="confirmInput" class="form-control form-control-lg border-danger border-opacity-50" autocomplete="off" placeholder="Nhập tên khoa vào đây..." />
+                        </div>
+
+                        <div class="d-grid gap-3">
+                            <button type="submit" id="btnDelete" class="btn btn-danger btn-lg fw-bold shadow-sm" disabled>
+                                <i class="fa-solid fa-trash-can me-2"></i> Tôi hiểu hậu quả, Xóa Khoa này
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary btn-lg">
+                                Hủy và Quay lại
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const confirmInput = document.getElementById('confirmInput');
+        const btnDelete = document.getElementById('btnDelete');
+        // Lấy tên Khoa từ Model truyền xuống JS
+        const targetName = "@Html.Raw(Model.FacultyName)";
+
+        confirmInput.addEventListener('input', function() {
+            // Nếu người dùng gõ đúng y hệt tên Khoa thì mở khóa nút Xóa
+            if (this.value.trim() === targetName.trim()) {
+                btnDelete.removeAttribute('disabled');
+            } else {
+                btnDelete.setAttribute('disabled', 'true');
+            }
+        });
+    </script>
+}

@@ -1,0 +1,81 @@
+﻿@model UniversityManagementSystem.Models.Student
+
+@{
+    ViewData["Title"] = "Cập nhật Sinh viên";
+}
+
+<div class="container pt-4 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow border-0">
+                <div class="card-header bg-warning text-dark">
+                    <h4 class="mb-0"><i class="fa-solid fa-user-pen me-2"></i>Cập nhật Hồ sơ Sinh viên</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <input type="hidden" asp-for="StudentId" />
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Mã Sinh viên</label>
+                                <input class="form-control bg-light" value="@Model.StudentId" readonly />
+                                <small class="text-muted">Mã sinh viên không thể thay đổi.</small>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="FullName" class="form-label fw-bold">Họ và Tên</label>
+                                <input asp-for="FullName" class="form-control" />
+                                <span asp-validation-for="FullName" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="DateOfBirth" class="form-label fw-bold">Ngày sinh</label>
+                                <input asp-for="DateOfBirth" class="form-control" type="date" />
+                                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="ClassId" class="form-label fw-bold">Lớp học</label>
+                                <select asp-for="ClassId" class="form-select" asp-items="ViewBag.ClassId"></select>
+                                <span asp-validation-for="ClassId" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Email" class="form-label fw-bold">Email</label>
+                                <input asp-for="Email" class="form-control" type="email" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="PhoneNumber" class="form-label fw-bold">Số điện thoại</label>
+                                <input asp-for="PhoneNumber" class="form-control" />
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-8 mb-3">
+                                <label asp-for="Address" class="form-label fw-bold">Địa chỉ</label>
+                                <input asp-for="Address" class="form-control" />
+                                <span asp-validation-for="Address" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="Status" class="form-label fw-bold">Trạng thái</label>
+                                <select asp-for="Status" class="form-select">
+                                    <option value="Đang học">Đang học</option>
+                                    <option value="Bảo lưu">Bảo lưu</option>
+                                    <option value="Đã tốt nghiệp">Đã tốt nghiệp</option>
+                                    <option value="Đuổi học">Đuổi học</option>
+                                </select>
+                                <span asp-validation-for="Status" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <a asp-action="Index" class="btn btn-secondary me-2"><i class="fa-solid fa-arrow-left"></i> Quay lại</a>
+                            <button type="submit" class="btn btn-warning px-4 fw-bold"><i class="fa-solid fa-save"></i> Lưu thay đổi</button>
+                        </div>
+                    </form>

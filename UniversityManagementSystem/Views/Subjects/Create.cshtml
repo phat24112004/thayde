@@ -1,0 +1,40 @@
+﻿@model UniversityManagementSystem.Models.Subject
+
+@{
+    ViewData["Title"] = "Thêm Môn học";
+}
+
+<div class="container pt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow border-0">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0"><i class="fa-solid fa-book me-2"></i>Thêm Môn học mới</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="SubjectId" class="form-label fw-bold">Mã Môn học</label>
+                            <input asp-for="SubjectId" class="form-control" placeholder="Ví dụ: PRN211, CSH101..." />
+                            <span asp-validation-for="SubjectId" class="text-danger"></span>
+                            <small class="text-muted">Nhập mã viết tắt của môn học (Tối đa 20 ký tự).</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="SubjectName" class="form-label fw-bold">Tên Môn học</label>
+                            <input asp-for="SubjectName" class="form-control" placeholder="Ví dụ: Lập trình C# nâng cao" />
+                            <span asp-validation-for="SubjectName" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <a asp-action="Index" class="btn btn-secondary me-2"><i class="fa-solid fa-arrow-left"></i> Quay lại</a>
+                            <button type="submit" class="btn btn-info text-white px-4"><i class="fa-solid fa-save"></i> Lưu lại</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

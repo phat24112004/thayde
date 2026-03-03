@@ -1,0 +1,47 @@
+﻿@model UniversityManagementSystem.Models.Grade
+
+@{
+    ViewData["Title"] = "Cập nhật Điểm số";
+}
+
+<div class="container pt-4 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow border-0">
+                <div class="card-header bg-warning text-dark">
+                    <h4 class="mb-0"><i class="fa-solid fa-pen-to-square me-2"></i>Cập nhật Điểm số</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <input type="hidden" asp-for="GradeId" />
+
+                        <div class="mb-3">
+                            <label asp-for="StudentId" class="form-label fw-bold">Sinh viên</label>
+                            <select asp-for="StudentId" class="form-select" asp-items="ViewBag.StudentId"></select>
+                            <span asp-validation-for="StudentId" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="SubjectId" class="form-label fw-bold">Môn học</label>
+                            <select asp-for="SubjectId" class="form-select" asp-items="ViewBag.SubjectId"></select>
+                            <span asp-validation-for="SubjectId" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Score" class="form-label fw-bold text-primary">Điểm số (Hệ 10)</label>
+                            <input asp-for="Score" class="form-control form-control-lg text-primary fw-bold" type="number" step="0.1" min="0" max="10" placeholder="0.0 - 10.0" />
+                            <span asp-validation-for="Score" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <a asp-action="Index" class="btn btn-secondary me-2"><i class="fa-solid fa-arrow-left"></i> Quay lại</a>
+                            <button type="submit" class="btn btn-warning px-4 fw-bold"><i class="fa-solid fa-save"></i> Lưu thay đổi</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

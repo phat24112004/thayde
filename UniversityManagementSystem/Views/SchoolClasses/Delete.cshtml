@@ -1,0 +1,62 @@
+﻿@model UniversityManagementSystem.Models.SchoolClass
+
+@{
+    ViewData["Title"] = "Xác nhận Xóa Lớp";
+}
+
+<div class="container pt-5 pb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+
+            <div class="mb-4">
+                <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-danger bg-opacity-10 text-danger" style="width: 90px; height: 90px;">
+                    <i class="fa-solid fa-triangle-exclamation fa-3x"></i>
+                </div>
+            </div>
+
+            <h2 class="fw-bolder mb-3">Xóa lớp học này?</h2>
+            <p class="text-muted fs-5 mb-4">
+                Hành động này <strong class="text-danger">không thể hoàn tác</strong>. Dữ liệu của lớp
+                <strong class="text-dark fs-4">@Model.ClassName</strong> sẽ biến mất vĩnh viễn.
+            </p>
+
+            <div class="card shadow-lg border-danger border-opacity-50 text-start">
+                <div class="card-body p-4 bg-light rounded">
+                    <form asp-action="Delete">
+                        <input type="hidden" asp-for="ClassId" />
+
+                        <div class="mb-4">
+                            <label class="form-label text-muted">Vui lòng nhập <span class="user-select-all text-danger fw-bold bg-danger bg-opacity-10 px-2 py-1 rounded border border-danger border-opacity-25">@Model.ClassName</span> để xác nhận:</label>
+                            <input type="text" id="confirmInputClass" class="form-control form-control-lg border-danger border-opacity-50" autocomplete="off" placeholder="Nhập tên lớp..." />
+                        </div>
+
+                        <div class="d-grid gap-3">
+                            <button type="submit" id="btnDeleteClass" class="btn btn-danger btn-lg fw-bold shadow-sm" disabled>
+                                <i class="fa-solid fa-trash-can me-2"></i> Xác nhận Xóa Lớp học
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary btn-lg">
+                                Hủy và Quay lại
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const confirmInput = document.getElementById('confirmInputClass');
+        const btnDelete = document.getElementById('btnDeleteClass');
+        const targetName = "@Html.Raw(Model.ClassName)";
+
+        confirmInput.addEventListener('input', function() {
+            if (this.value.trim() === targetName.trim()) {
+                btnDelete.removeAttribute('disabled');
+            } else {
+                btnDelete.setAttribute('disabled', 'true');
+            }
+        });
+    </script>
+}

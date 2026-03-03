@@ -1,0 +1,57 @@
+﻿@model UniversityManagementSystem.Models.Grade
+
+@{
+    ViewData["Title"] = "Nhập Điểm";
+}
+
+<div class="container pt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow border-0">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="mb-0"><i class="fa-solid fa-pen-nib me-2"></i>Nhập điểm Sinh viên</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="StudentId" class="form-label fw-bold">Sinh viên</label>
+                                <select asp-for="StudentId" class="form-select" asp-items="ViewBag.StudentId"></select>
+                                @* <input asp-for="StudentId" class="form-control" placeholder="Nhập mã SV" /> *@
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="SubjectId" class="form-label fw-bold">Môn học</label>
+                                <select asp-for="SubjectId" class="form-select" asp-items="ViewBag.SubjectId"></select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="Score" class="form-label fw-bold">Điểm số</label>
+                                <input asp-for="Score" class="form-control" type="number" step="0.1" min="0" max="10" />
+                                <span asp-validation-for="Score" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="ExamDate" class="form-label fw-bold">Ngày thi</label>
+                                <input asp-for="ExamDate" class="form-control" type="date" />
+                                <span asp-validation-for="ExamDate" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="Semester" class="form-label fw-bold">Học kỳ</label>
+                                <input asp-for="Semester" class="form-control" placeholder="Spring 2026" />
+                                <span asp-validation-for="Semester" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <a asp-action="Index" class="btn btn-secondary me-2"><i class="fa-solid fa-arrow-left"></i> Quay lại</a>
+                            <button type="submit" class="btn btn-danger px-4"><i class="fa-solid fa-save"></i> Lưu lại</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

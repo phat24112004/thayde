@@ -1,0 +1,181 @@
+﻿@{
+    ViewData["Title"] = "Trang chủ - UniManager";
+}
+
+<style>
+    .hover-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .hover-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
+        }
+
+    .icon-box {
+        width: 80px;
+        height: 80px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        margin-bottom: 15px;
+    }
+</style>
+
+<div class="container-fluid py-4">
+
+    <div class="p-5 mb-5 bg-primary text-white rounded-4 shadow position-relative overflow-hidden">
+        <div class="position-relative z-1">
+            <h1 class="display-4 fw-bolder mb-3"><i class="fa-solid fa-graduation-cap me-3"></i>Hệ thống Quản lý Đại học</h1>
+            <p class="col-md-8 fs-4 mb-4">Nền tảng quản lý đào tạo số hóa hiện đại, tập trung và hiệu quả dành cho cán bộ, giảng viên và sinh viên.</p>
+            <a asp-controller="Students" asp-action="Index" class="btn btn-light btn-lg text-primary fw-bold px-4 shadow-sm rounded-pill">
+                <i class="fa-solid fa-users-viewfinder me-2"></i> Quản lý Sinh viên ngay
+            </a>
+        </div>
+        <i class="fa-solid fa-university position-absolute text-white opacity-25" style="font-size: 15rem; bottom: -20px; right: -20px; transform: rotate(-10deg);"></i>
+    </div>
+
+    <div class="row text-center mb-5 g-4">
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 bg-info text-white rounded-4 hover-card h-100">
+                <div class="card-body py-4">
+                    <i class="fa-solid fa-building-columns fa-3x mb-3 opacity-75"></i>
+                    <h2 class="fw-bolder display-5">@ViewBag.TotalFaculties</h2>
+                    <h5 class="mb-0 fw-normal">Khoa Đào tạo</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 bg-success text-white rounded-4 hover-card h-100">
+                <div class="card-body py-4">
+                    <i class="fa-solid fa-users-rectangle fa-3x mb-3 opacity-75"></i>
+                    <h2 class="fw-bolder display-5">@ViewBag.TotalClasses</h2>
+                    <h5 class="mb-0 fw-normal">Lớp học</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 bg-warning text-dark rounded-4 hover-card h-100">
+                <div class="card-body py-4">
+                    <i class="fa-solid fa-user-graduate fa-3x mb-3 opacity-75"></i>
+                    <h2 class="fw-bolder display-5">@ViewBag.TotalStudents</h2>
+                    <h5 class="mb-0 fw-normal">Sinh viên</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 bg-danger text-white rounded-4 hover-card h-100">
+                <div class="card-body py-4">
+                    <i class="fa-solid fa-book-open fa-3x mb-3 opacity-75"></i>
+                    <h2 class="fw-bolder display-5">@ViewBag.TotalSubjects</h2>
+                    <h5 class="mb-0 fw-normal">Môn học</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-5 justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0 rounded-4">
+                <div class="card-header bg-white border-0 pt-4 pb-0 text-center">
+                    <h4 class="fw-bold text-primary"><i class="fa-solid fa-chart-pie me-2"></i>Thống kê Trạng thái Sinh viên</h4>
+                </div>
+                <div class="card-body d-flex justify-content-center" style="position: relative; height:300px;">
+                    <canvas id="studentStatusChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h3 class="text-primary fw-bold border-bottom border-2 border-primary pb-2 mb-4 d-inline-block">
+        <i class="fa-solid fa-layer-group me-2"></i>Phân hệ Quản lý
+    </h3>
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0 hover-card rounded-4 text-center p-3">
+                <div class="card-body">
+                    <div class="icon-box bg-info bg-opacity-10 text-info text-center">
+                        <i class="fa-solid fa-sitemap fa-2x"></i>
+                    </div>
+                    <h4 class="fw-bold">Khoa Đào tạo</h4>
+                    <p class="text-muted">Tổ chức và lưu trữ thông tin các khoa chuyên môn thuộc trường đại học.</p>
+                    <a asp-controller="Faculties" asp-action="Index" class="btn btn-outline-info rounded-pill px-4 stretched-link">Truy cập</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0 hover-card rounded-4 text-center p-3">
+                <div class="card-body">
+                    <div class="icon-box bg-success bg-opacity-10 text-success text-center">
+                        <i class="fa-solid fa-chalkboard-user fa-2x"></i>
+                    </div>
+                    <h4 class="fw-bold">Lớp học</h4>
+                    <p class="text-muted">Quản lý danh sách lớp hành chính và phân bổ trực thuộc các khoa.</p>
+                    <a asp-controller="SchoolClasses" asp-action="Index" class="btn btn-outline-success rounded-pill px-4 stretched-link">Truy cập</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0 hover-card rounded-4 text-center p-3">
+                <div class="card-body">
+                    <div class="icon-box bg-warning bg-opacity-10 text-warning text-center">
+                        <i class="fa-solid fa-star-half-stroke fa-2x"></i>
+                    </div>
+                    <h4 class="fw-bold">Kết quả Học tập</h4>
+                    <p class="text-muted">Nhập điểm, theo dõi và đánh giá kết quả học tập của từng sinh viên.</p>
+                    <a asp-controller="Grades" asp-action="Index" class="btn btn-outline-warning rounded-pill px-4 stretched-link">Truy cập</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        // Lấy dữ liệu từ ViewBag mà Controller vừa gửi sang
+        const labels = @Html.Raw(ViewBag.ChartLabels);
+        const data = @Html.Raw(ViewBag.ChartData);
+
+        // Cấu hình vẽ biểu đồ Doughnut (Biểu đồ tròn có lỗ ở giữa)
+        const ctx = document.getElementById('studentStatusChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Số lượng sinh viên',
+                    data: data,
+                    // Bảng màu xịn xò cho các trạng thái
+                    backgroundColor: [
+                        'rgba(40, 167, 69, 0.8)',   // Xanh lá (Đang học)
+                        'rgba(255, 193, 7, 0.8)',   // Vàng (Bảo lưu)
+                        'rgba(23, 162, 184, 0.8)',  // Xanh dương (Đã tốt nghiệp)
+                        'rgba(220, 53, 69, 0.8)',   // Đỏ (Đuổi học)
+                        'rgba(108, 117, 125, 0.8)'  // Xám (Khác)
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { font: { size: 14, family: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif" } }
+                    }
+                },
+                // Hiệu ứng hover cho nó nẩy nẩy lên
+                hoverOffset: 10
+            }
+        });
+    </script>
+}

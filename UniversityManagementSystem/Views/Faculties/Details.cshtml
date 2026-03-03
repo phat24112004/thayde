@@ -1,0 +1,47 @@
+﻿@model UniversityManagementSystem.Models.Faculty
+
+@{
+    ViewData["Title"] = "Chi tiết Khoa";
+}
+
+<div class="container pt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="card shadow border-0">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0"><i class="fa-solid fa-circle-info me-2"></i>Thông tin chi tiết Khoa</h4>
+                </div>
+                <div class="card-body p-4">
+                    <dl class="row mb-0 fs-5">
+                        <dt class="col-sm-4 text-muted">Mã Khoa</dt>
+                        <dd class="col-sm-8 fw-bold">@Html.DisplayFor(model => model.FacultyId)</dd>
+
+                        <dt class="col-sm-4 text-muted">Tên Khoa</dt>
+                        <dd class="col-sm-8 fw-bold text-primary">@Html.DisplayFor(model => model.FacultyName)</dd>
+
+                        <dt class="col-sm-4 text-muted">Ngày thành lập</dt>
+                        <dd class="col-sm-8">
+                            @if (Model.EstablishedDate.HasValue)
+                            {
+                                /* Format lại ngày tháng cho dễ nhìn theo chuẩn Việt Nam */
+                                <span>@Model.EstablishedDate.Value.ToString("dd/MM/yyyy")</span>
+                            }
+                            else
+                            {
+                                <span class="text-secondary fst-italic">Chưa cập nhật</span>
+                            }
+                        </dd>
+                    </dl>
+                </div>
+                <div class="card-footer bg-light text-end p-3">
+                    <a asp-action="Index" class="btn btn-secondary me-2">
+                        <i class="fa-solid fa-arrow-left"></i> Quay lại
+                    </a>
+                    <a asp-action="Edit" asp-route-id="@Model?.FacultyId" class="btn btn-warning fw-bold">
+                        <i class="fa-solid fa-pen-to-square"></i> Cập nhật
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

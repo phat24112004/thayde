@@ -1,0 +1,112 @@
+﻿@model IEnumerable<UniversityManagementSystem.Models.Grade>
+
+@{
+    ViewData["Title"] = "Quản lý điểm số";
+}
+
+<div class="container-fluid pt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3 mt-3">
+        <h2 class="text-primary mb-0"><i class="fa-solid fa-star-half-stroke me-2"></i>Danh sách điểm số</h2>
+
+        <div class="d-flex align-items-center gap-2">
+            <a asp-action="ExportToExcel" class="btn btn-sm btn-info text-white shadow-sm rounded-pill px-3 d-flex align-items-center py-2" title="Xuất bảng điểm ra file Excel">
+                <i class="fa-solid fa-file-excel me-1"></i> Xuất Excel
+            </a>
+            <a asp-action="Create" class="btn btn-sm btn-success shadow-sm rounded-pill px-3 d-flex align-items-center py-2">
+                <i class="fa-solid fa-plus me-1"></i> Thêm mới
+            </a>
+        </div>
+    </div>
+
+
+    <div class="row align-items-center mb-4 mt-3">
+        <div class="col-md-3">
+            <h3 class="text-primary mb-0 fw-bold"></h3>
+        </div>
+        <div class="col-md-9 d-flex justify-content-end align-items-center gap-2">
+            <form asp-action="Index" method="get" class="m-0 d-flex gap-2">
+
+                <select name="subjectId" class="form-select form-select-sm shadow-sm rounded-pill border-primary border-opacity-25" style="width: 165px;" asp-items="ViewBag.SubjectList" onchange="this.form.submit()">
+                    <option value="">-- Tất cả Môn học --</option>
+                </select>
+
+                <div class="input-group input-group-sm shadow-sm rounded-pill overflow-hidden border border-primary border-opacity-25 bg-white" style="width: 250px;">
+                    <span class="input-group-text bg-transparent border-0 text-primary ps-3 pe-2"><i class="fa-solid fa-magnifying-glass"></i></span>
+                    <input type="text" name="searchString" value="@ViewData["CurrentFilter"]" class="form-control border-0 shadow-none bg-transparent" placeholder="Tìm tên sinh viên..." autocomplete="off">
+                    @if (!string.IsNullOrEmpty(ViewData["CurrentFilter"]?.ToString()) || !string.IsNullOrEmpty(ViewData["CurrentSubjectId"]?.ToString()))
+                    {
+                        <a asp-action="Index" class="btn btn-light text-danger border-0"><i class="fa-solid fa-xmark"></i></a>
+                    }
+                    <button type="submit" class="btn btn-primary px-3 fw-bold border-0">Tìm</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card shadow border-0">
+        <div class="card-body p-0">
+            <table class="table table-hover table-custom mb-0 text-center align-middle">
+                <thead class="bg-info text-black-50">
+                    <tr>
+                        <th class="py-3">Sinh viên</th>
+                        <th class="py-3">Môn học</th>
+                        <th class="py-3">Điểm số</th>
+                        <th class="py-3">Ngày thi</th>
+                        <th class="py-3">Học kỳ</th>
+                        <th class="py-3">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="fw-bold text-start ps-4">
+                                <i class="fa-solid fa-user-graduate me-2 text-secondary"></i>
+                                @Html.DisplayFor(modelItem => item.Student.FullName)
+                            </td>
+                            <td>@Html.DisplayFor(modelItem => item.Subject.SubjectName)</td>
+                            <td>
+                                @if (item.Score >= 5)
+                                {
+                                    <span class="badge bg-success fs-6">@Html.DisplayFor(modelItem => item.Score)</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger fs-6">@Html.DisplayFor(modelItem => item.Score)</span>
+                                }
+                            </td>
+                            <td>@Html.DisplayFor(modelItem => item.ExamDate)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Semester)</td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a asp-action="Edit" asp-route-id="@item.GradeId" class="btn btn-sm btn-warning"><i class="fa-solid fa-pen"></i></a>
+                                    <a asp-action="Details" asp-route-id="@item.GradeId" class="btn btn-sm btn-info text-white"><i class="fa-solid fa-info-circle"></i></a>
+                                    <a asp-action="Delete" asp-route-id="@item.GradeId" class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@if (ViewBag.TotalPages > 1)
+{
+    <nav class="mt-4 mb-5">
+        <ul class="pagination justify-content-center">
+            <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
+                <a class="page-link shadow-sm" asp-action="Index" asp-route-pageNumber="@(ViewBag.CurrentPage - 1)" asp-route-searchString="@ViewData["CurrentFilter"]" asp-route-subjectId="@ViewData["CurrentSubjectId"]"><i class="fa-solid fa-chevron-left"></i> Trước</a>
+            </li>
+            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+            {
+                <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                    <a class="page-link shadow-sm" asp-action="Index" asp-route-pageNumber="@i" asp-route-searchString="@ViewData["CurrentFilter"]" asp-route-subjectId="@ViewData["CurrentSubjectId"]">@i</a>
+                </li>
+            }
+            <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
+                <a class="page-link shadow-sm" asp-action="Index" asp-route-pageNumber="@(ViewBag.CurrentPage + 1)" asp-route-searchString="@ViewData["CurrentFilter"]" asp-route-subjectId="@ViewData["CurrentSubjectId"]">Sau <i class="fa-solid fa-chevron-right"></i></a>
+            </li>
+        </ul>
+    </nav>
+}

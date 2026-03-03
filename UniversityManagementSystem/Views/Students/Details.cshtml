@@ -1,0 +1,63 @@
+﻿@model UniversityManagementSystem.Models.Student
+
+@{
+    ViewData["Title"] = "Hồ sơ Sinh viên";
+}
+
+<div class="container pt-4 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow border-0">
+                <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0"><i class="fa-solid fa-user-graduate me-2"></i>Hồ sơ Sinh viên</h4>
+                    <span class="badge bg-light text-info fs-6">@Model.Status</span>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row mb-4 border-bottom pb-3">
+                        <div class="col-sm-3 text-center">
+                            <i class="fa-solid fa-circle-user fa-5x text-secondary mb-2"></i>
+                            <h5 class="fw-bold text-primary mb-0">@Model.StudentId</h5>
+                        </div>
+                        <div class="col-sm-9 d-flex align-items-center">
+                            <h2 class="fw-bolder mb-0">@Model.FullName</h2>
+                        </div>
+                    </div>
+
+                    <div class="row fs-5">
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-5 text-muted">Ngày sinh</dt>
+                                <dd class="col-sm-7 fw-bold">@(Model.DateOfBirth?.ToString("dd/MM/yyyy") ?? "Chưa có")</dd>
+
+                                <dt class="col-sm-5 text-muted">Lớp học</dt>
+                                <dd class="col-sm-7 fw-bold text-success">@Model.SchoolClass?.ClassName</dd>
+                            </dl>
+                        </div>
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-4 text-muted">Email</dt>
+                                <dd class="col-sm-8">@(string.IsNullOrEmpty(Model.Email) ? "Chưa có" : Model.Email)</dd>
+
+                                <dt class="col-sm-4 text-muted">Điện thoại</dt>
+                                <dd class="col-sm-8">@(string.IsNullOrEmpty(Model.PhoneNumber) ? "Chưa có" : Model.PhoneNumber)</dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <dl class="row fs-5 mt-2">
+                        <dt class="col-sm-2 text-muted">Địa chỉ</dt>
+                        <dd class="col-sm-10">@(string.IsNullOrEmpty(Model.Address) ? "Chưa có" : Model.Address)</dd>
+                    </dl>
+                </div>
+                <div class="card-footer bg-light text-end p-3">
+                    <a asp-action="Index" class="btn btn-secondary me-2">
+                        <i class="fa-solid fa-arrow-left"></i> Quay lại danh sách
+                    </a>
+                    <a asp-action="Edit" asp-route-id="@Model?.StudentId" class="btn btn-warning fw-bold">
+                        <i class="fa-solid fa-pen-to-square"></i> Cập nhật hồ sơ
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

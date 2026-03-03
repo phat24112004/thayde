@@ -1,0 +1,82 @@
+﻿@model IEnumerable<UniversityManagementSystem.Models.Faculty>
+
+@{
+    ViewData["Title"] = "Quản lý khoa";
+}
+
+<div class="container-fluid pt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="text-primary"><i class="fa-solid fa-school me-2"></i>Danh sách khoa</h2>
+        <a asp-action="Create" class="btn btn-success shadow-sm">
+            <i class="fa-solid fa-plus me-1"></i> Thêm Khoa mới
+        </a>
+    </div>
+
+    <div class="row align-items-center mb-4 mt-3">
+        <div class="col-md-4">
+            <h3 class="text-primary mb-0 fw-bold"></h3>
+        </div>
+        <div class="col-md-8 d-flex justify-content-end align-items-center gap-2">
+            <form asp-action="Index" method="get" class="m-0">
+                <div class="input-group input-group-sm shadow-sm rounded-pill overflow-hidden border border-primary border-opacity-25 bg-white" style="width: 280px;">
+                    <span class="input-group-text bg-transparent border-0 text-primary ps-3 pe-2"><i class="fa-solid fa-magnifying-glass"></i></span>
+                    <input type="text" name="searchString" value="@ViewData["CurrentFilter"]" class="form-control border-0 shadow-none bg-transparent" placeholder="Nhập tên khoa..." autocomplete="off">
+                    @if (!string.IsNullOrEmpty(ViewData["CurrentFilter"]?.ToString()))
+                    {
+                        <a asp-action="Index" class="btn btn-light text-danger border-0"><i class="fa-solid fa-xmark"></i></a>
+                    }
+                    <button type="submit" class="btn btn-primary px-3 fw-bold border-0">Tìm</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card shadow border-0">
+        <div class="card-body p-0">
+            <table class="table table-hover table-custom mb-0 text-center align-middle">
+                <thead class="bg-info text-black-50">
+                    <tr>
+                        <th class="py-3">Mã Khoa</th>
+                        <th class="py-3">Tên Khoa</th>
+                        <th class="py-3">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="fw-bold text-primary">@Html.DisplayFor(modelItem => item.FacultyId)</td>
+                            <td class="fw-bold">@Html.DisplayFor(modelItem => item.FacultyName)</td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a asp-action="Edit" asp-route-id="@item.FacultyId" class="btn btn-sm btn-warning" title="Sửa"><i class="fa-solid fa-pen"></i></a>
+                                    <a asp-action="Details" asp-route-id="@item.FacultyId" class="btn btn-sm btn-info text-white" title="Chi tiết"><i class="fa-solid fa-info-circle"></i></a>
+                                    <a asp-action="Delete" asp-route-id="@item.FacultyId" class="btn btn-sm btn-danger" title="Xóa"><i class="fa-solid fa-trash"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@if (ViewBag.TotalPages > 1)
+{
+    <nav class="mt-4 mb-5">
+        <ul class="pagination justify-content-center">
+            <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
+                <a class="page-link shadow-sm" asp-action="Index" asp-route-pageNumber="@(ViewBag.CurrentPage - 1)" asp-route-searchString="@ViewData["CurrentFilter"]"><i class="fa-solid fa-chevron-left"></i> Trước</a>
+            </li>
+            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+            {
+                <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                    <a class="page-link shadow-sm" asp-action="Index" asp-route-pageNumber="@i" asp-route-searchString="@ViewData["CurrentFilter"]">@i</a>
+                </li>
+            }
+            <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
+                <a class="page-link shadow-sm" asp-action="Index" asp-route-pageNumber="@(ViewBag.CurrentPage + 1)" asp-route-searchString="@ViewData["CurrentFilter"]">Sau <i class="fa-solid fa-chevron-right"></i></a>
+            </li>
+        </ul>
+    </nav>
+}
