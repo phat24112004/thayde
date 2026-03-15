@@ -1,141 +1,510 @@
-﻿@model IEnumerable<UniversityManagementSystem.Models.Student>
+﻿@* @model IEnumerable<UniversityManagementSystem.Models.Student>
 
 @{
-    ViewData["Title"] = "Quản lý sinh viên";
+    ViewData["Title"] = "Quản lý Học sinh";
 }
 
-<div class="container-fluid pt-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="text-primary mb-0"><i class="fa-solid fa-user-graduate me-2"></i>Danh sách sinh viên</h2>
+<style>
+    /* CSS Riêng cho trang Danh sách */
+    .table-custom {
+        border-collapse: separate;
+        border-spacing: 0 10px; /* Tạo khoảng cách giữa các dòng */
+        background-color: transparent;
+    }
+
+        .table-custom thead th {
+            border: none;
+            color: #6c757d;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+
+        .table-custom tbody tr {
+            background-color: #ffffff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            border-radius: 10px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+            .table-custom tbody tr:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            }
+
+        .table-custom tbody td {
+            border: none;
+            vertical-align: middle;
+            padding: 15px 10px;
+        }
+            /* Bo góc cho ô đầu và ô cuối của mỗi dòng */
+            .table-custom tbody td:first-child {
+                border-top-left-radius: 10px;
+                border-bottom-left-radius: 10px;
+            }
+
+            .table-custom tbody td:last-child {
+                border-top-right-radius: 10px;
+                border-bottom-right-radius: 10px;
+            }
+
+    .avatar-sm {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        background-color: #e8f0fe;
+        color: #1a73e8;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        margin-right: 10px;
+    }
+
+    /* Tùy chỉnh nút Phân trang */
+    .pagination .page-link {
+        border: none;
+        color: #555;
+        border-radius: 8px;
+        margin: 0 4px;
+        font-weight: 500;
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #1a73e8;
+        color: white;
+        box-shadow: 0 3px 8px rgba(26, 115, 232, 0.4);
+    }
+</style>
+
+<div class="container-fluid pt-2">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="text-primary mb-1 fw-bold"><i class="fa-solid fa-users me-2"></i>Danh sách Học sinh</h3>
+            <p class="text-muted mb-0" style="font-size: 0.9rem;">Quản lý thông tin, tìm kiếm và cập nhật hồ sơ học sinh</p>
+        </div>
 
         <div class="d-flex align-items-center gap-2">
-            <a asp-action="ExportToExcel" class="btn btn-sm btn-info text-white shadow-sm rounded-pill px-3 d-flex align-items-center py-2" title="Xuất danh sách ra file Excel">
-                <i class="fa-solid fa-file-excel me-1"></i> Xuất Excel
+            <a asp-action="ExportToExcel" class="btn btn-light shadow-sm text-primary px-3 d-flex align-items-center py-2" style="border-radius: 8px; font-weight: 600;">
+                <i class="fa-solid fa-file-excel me-2"></i> Xuất Excel
             </a>
-            <a asp-action="Create" class="btn btn-sm btn-success shadow-sm rounded-pill px-3 d-flex align-items-center py-2">
-                <i class="fa-solid fa-plus me-1"></i> Thêm mới
+            <a asp-action="Create" class="btn btn-primary shadow-sm px-4 d-flex align-items-center py-2" style="border-radius: 8px; font-weight: 600;">
+                <i class="fa-solid fa-plus me-2"></i> Thêm mới
             </a>
         </div>
     </div>
 
-    <div class="row align-items-center mb-4 mt-3">
-        <div class="col-md-3">
-            <h3 class="text-primary mb-0 fw-bold"></h3>
-        </div>
+    <div class="card border-0 shadow-sm mb-4" style="border-radius: 12px;">
+        <div class="card-body p-3">
+            <form asp-action="Index" method="get" class="m-0 d-flex flex-wrap gap-3 align-items-center">
 
-        <div class="col-md-9 d-flex justify-content-end align-items-center gap-2">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="fa-solid fa-filter text-muted"></i>
+                    <select name="classId" class="form-select border-0 bg-light" style="width: 200px; border-radius: 8px;" asp-items="ViewBag.ClassList" onchange="this.form.submit()">
+                        <option value="">-- Tất cả các Lớp --</option>
+                    </select>
+                </div>
 
-            <form asp-action="Index" method="get" class="m-0 d-flex gap-2">
-
-                <select name="classId" class="form-select form-select-sm shadow-sm rounded-pill border-primary border-opacity-25" style="width: 165px;" asp-items="ViewBag.ClassList" onchange="this.form.submit()">
-                    <option value="">-- Tất cả các Lớp --</option>
-                </select>
-
-                <div class="input-group input-group-sm shadow-sm rounded-pill overflow-hidden border border-primary border-opacity-25 bg-white" style="width: 250px;">
-                    <span class="input-group-text bg-transparent border-0 text-primary ps-3 pe-2">
+                <div class="flex-grow-1"></div> <div class="input-group bg-light p-1" style="width: 350px; border-radius: 10px;">
+                    <span class="input-group-text bg-transparent border-0 text-muted ps-3">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </span>
-
                     <input type="text" name="searchString" value="@ViewData["CurrentFilter"]"
-                           class="form-control border-0 shadow-none bg-transparent"
-                           placeholder="Tìm tên, mã SV..." autocomplete="off">
+                           class="form-control border-0 bg-transparent shadow-none"
+                           placeholder="Nhập mã hoặc tên học sinh..." autocomplete="off">
 
                     @if (!string.IsNullOrEmpty(ViewData["CurrentFilter"]?.ToString()) || ViewData["CurrentClassId"] != null)
                     {
-                        <a asp-action="Index" class="btn btn-light text-danger border-0" title="Hủy tìm kiếm">
-                            <i class="fa-solid fa-xmark"></i>
+                        <a asp-action="Index" class="btn btn-sm text-danger border-0 d-flex align-items-center" title="Hủy tìm kiếm">
+                            <i class="fa-solid fa-xmark fs-5"></i>
                         </a>
                     }
-
-                    <button type="submit" class="btn btn-primary px-3 fw-bold border-0">Tìm</button>
+                    <button type="submit" class="btn text-white px-4 fw-bold shadow-sm" style="background-color: #f2994a; border-radius: 8px;">Tìm</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <div class="card shadow border-0">
-        <div class="card-body p-0">
-            <table class="table table-hover table-striped mb-0 text-center align-middle">
-                <thead class="bg-primary text-black-50">
+    <div class="table-responsive px-1">
+        <table class="table table-custom text-center align-middle w-100">
+            <thead>
+                <tr>
+                    <th class="ps-3 text-start">Mã HS</th>
+                    <th class="text-start">Học sinh</th>
+                    <th>Ngày sinh</th>
+                    <th>Lớp</th>
+                    <th>Liên hệ</th>
+                    <th>Trạng thái</th>
+                    <th class="pe-3">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
                     <tr>
-                        <th class="py-3">Mã SV</th>
-                        <th class="py-3">Họ và Tên</th>
-                        <th class="py-3">Ngày sinh</th>
-                        <th class="py-3">Email</th>
-                        <th class="py-3">SĐT</th>
-                        <th class="py-3">Trạng thái</th>
-                        <th class="py-3">Lớp</th>
-                        <th class="py-3">Thao tác</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td class="fw-bold text-primary">@Html.DisplayFor(modelItem => item.StudentId)</td>
-                            <td class="fw-bold">@Html.DisplayFor(modelItem => item.FullName)</td>
-                            <td>@Html.DisplayFor(modelItem => item.DateOfBirth)</td>
-                            <td>@Html.DisplayFor(modelItem => item.Email)</td>
-                            <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
-                            <td>
-                                <span class="badge bg-info">@Html.DisplayFor(modelItem => item.Status)</span>
-                            </td>
-                            <td>
-                                <span class="badge bg-secondary">@Html.DisplayFor(modelItem => item.SchoolClass.ClassName)</span>
-                            </td>
-                            <td>
-                                <div class="btn-group" role="group">
-                                    <a asp-action="Edit" asp-route-id="@item.StudentId" class="btn btn-sm btn-warning" title="Sửa">
-                                        <i class="fa-solid fa-pen-to-square"></i>
-                                    </a>
-                                    <a asp-action="Details" asp-route-id="@item.StudentId" class="btn btn-sm btn-info text-white" title="Chi tiết">
-                                        <i class="fa-solid fa-circle-info"></i>
-                                    </a>
-                                    <a asp-action="Delete" asp-route-id="@item.StudentId" class="btn btn-sm btn-danger" title="Xóa">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </a>
+                        <td class="ps-3 text-start fw-bold" style="color: #555;">@Html.DisplayFor(modelItem => item.StudentId)</td>
+
+                        <td class="text-start">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar-sm shadow-sm">
+                                    <i class="fa-solid fa-user"></i>
                                 </div>
-                            </td>
-                        </tr>
+                                <div>
+                                    <div class="fw-bold" style="color: #333;">@Html.DisplayFor(modelItem => item.FullName)</div>
+                                    <div class="text-muted" style="font-size: 0.8rem;">@Html.DisplayFor(modelItem => item.Email)</div>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td>@Html.DisplayFor(modelItem => item.DateOfBirth)</td>
+
+                        <td>
+                            <span class="badge" style="background-color: #e8f0fe; color: #1a73e8; padding: 6px 12px; border-radius: 6px;">
+                                @Html.DisplayFor(modelItem => item.SchoolClass.ClassName)
+                            </span>
+                        </td>
+
+                        <td class="text-muted"><i class="fa-solid fa-phone fa-xs me-1"></i> @Html.DisplayFor(modelItem => item.PhoneNumber)</td>
+
+                        <td>
+                            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25" style="padding: 6px 12px; border-radius: 6px;">
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </span>
+                        </td>
+
+                        <td class="pe-3">
+                            <div class="d-flex justify-content-center gap-2">
+                                <a asp-action="Details" asp-route-id="@item.StudentId" class="btn btn-sm btn-light text-info rounded-circle shadow-sm" style="width: 32px; height: 32px; padding: 5px;" title="Chi tiết">
+                                    <i class="fa-solid fa-circle-info"></i>
+                                </a>
+                                <a asp-action="Edit" asp-route-id="@item.StudentId" class="btn btn-sm btn-light text-warning rounded-circle shadow-sm" style="width: 32px; height: 32px; padding: 5px;" title="Sửa">
+                                    <i class="fa-solid fa-pen"></i>
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@item.StudentId" class="btn btn-sm btn-light text-danger rounded-circle shadow-sm" style="width: 32px; height: 32px; padding: 5px;" title="Xóa">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @if (ViewBag.TotalPages > 1)
+    {
+        <nav aria-label="Page navigation" class="mt-2 mb-5">
+            <ul class="pagination justify-content-center shadow-sm d-inline-flex p-2 bg-white" style="border-radius: 12px;">
+
+                <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
+                    <a class="page-link" asp-action="Index"
+                       asp-route-pageNumber="@(ViewBag.CurrentPage - 1)"
+                       asp-route-searchString="@ViewData["CurrentFilter"]"
+                       asp-route-classId="@ViewData["CurrentClassId"]">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </a>
+                </li>
+
+                @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                {
+                    <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                        <a class="page-link" asp-action="Index"
+                           asp-route-pageNumber="@i"
+                           asp-route-searchString="@ViewData["CurrentFilter"]"
+                           asp-route-classId="@ViewData["CurrentClassId"]">@i</a>
+                    </li>
+                }
+
+                <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
+                    <a class="page-link" asp-action="Index"
+                       asp-route-pageNumber="@(ViewBag.CurrentPage + 1)"
+                       asp-route-searchString="@ViewData["CurrentFilter"]"
+                       asp-route-classId="@ViewData["CurrentClassId"]">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+    }
+</div> *@
+@model IEnumerable<UniversityManagementSystem.Models.Student>
+
+@{
+    ViewData["Title"] = "Quản lý Sinh viên";
+}
+
+<style>
+    /* CSS Riêng cho trang Danh sách */
+    .table-custom {
+        border-collapse: separate;
+        border-spacing: 0 10px; /* Tạo khoảng cách giữa các dòng */
+        background-color: transparent;
+    }
+
+        .table-custom thead th {
+            border: none;
+            color: #6c757d;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+
+        .table-custom tbody tr {
+            background-color: #ffffff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            border-radius: 10px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+            .table-custom tbody tr:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            }
+
+        .table-custom tbody td {
+            border: none;
+            vertical-align: middle;
+            padding: 15px 10px;
+        }
+            /* Bo góc cho ô đầu và ô cuối của mỗi dòng */
+            .table-custom tbody td:first-child {
+                border-top-left-radius: 10px;
+                border-bottom-left-radius: 10px;
+            }
+
+            .table-custom tbody td:last-child {
+                border-top-right-radius: 10px;
+                border-bottom-right-radius: 10px;
+            }
+
+    .avatar-sm {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        background-color: #e8f0fe;
+        color: #1a73e8;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        margin-right: 10px;
+    }
+
+    /* Tùy chỉnh nút Phân trang */
+    .pagination .page-link {
+        border: none;
+        color: #555;
+        border-radius: 8px;
+        margin: 0 4px;
+        font-weight: 500;
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #1a73e8;
+        color: white;
+        box-shadow: 0 3px 8px rgba(26, 115, 232, 0.4);
+    }
+</style>
+
+<div class="container-fluid pt-2">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="text-primary mb-1 fw-bold"><i class="fa-solid fa-users me-2"></i>Danh sách Sinh viên</h3>
+            <p class="text-muted mb-0" style="font-size: 0.9rem;">Quản lý thông tin, tìm kiếm và cập nhật hồ sơ sinh viên</p>
+        </div>
+
+        <div class="d-flex align-items-center gap-2">
+            <button type="button" class="btn btn-success shadow-sm px-3 d-flex align-items-center py-2" style="border-radius: 8px; font-weight: 600;" data-bs-toggle="modal" data-bs-target="#importExcelModal">
+                <i class="fa-solid fa-file-import me-2"></i> Nhập Excel
+            </button>
+            <a asp-action="ExportToExcel" class="btn btn-light shadow-sm text-primary px-3 d-flex align-items-center py-2" style="border-radius: 8px; font-weight: 600;">
+                <i class="fa-solid fa-file-excel me-2"></i> Xuất Excel
+            </a>
+            <a asp-action="Create" class="btn btn-primary shadow-sm px-4 d-flex align-items-center py-2" style="border-radius: 8px; font-weight: 600;">
+                <i class="fa-solid fa-plus me-2"></i> Thêm mới
+            </a>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm mb-4" style="border-radius: 12px;">
+        <div class="card-body p-3">
+            <form asp-action="Index" method="get" class="m-0 d-flex flex-wrap gap-3 align-items-center">
+
+                <div class="d-flex align-items-center gap-2">
+                    <i class="fa-solid fa-filter text-muted"></i>
+                    <select name="classId" class="form-select border-0 bg-light" style="width: 200px; border-radius: 8px;" asp-items="ViewBag.ClassList" onchange="this.form.submit()">
+                        <option value="">-- Tất cả các Lớp --</option>
+                    </select>
+                </div>
+
+                <div class="flex-grow-1"></div> <div class="input-group bg-light p-1" style="width: 350px; border-radius: 10px;">
+                    <span class="input-group-text bg-transparent border-0 text-muted ps-3">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </span>
+                    <input type="text" name="searchString" value="@ViewData["CurrentFilter"]"
+                           class="form-control border-0 bg-transparent shadow-none"
+                           placeholder="Nhập mã hoặc tên học sinh..." autocomplete="off">
+
+                    @if (!string.IsNullOrEmpty(ViewData["CurrentFilter"]?.ToString()) || ViewData["CurrentClassId"] != null)
+                    {
+                        <a asp-action="Index" class="btn btn-sm text-danger border-0 d-flex align-items-center" title="Hủy tìm kiếm">
+                            <i class="fa-solid fa-xmark fs-5"></i>
+                        </a>
                     }
-                </tbody>
-            </table>
+                    <button type="submit" class="btn text-white px-4 fw-bold shadow-sm" style="background-color: #f2994a; border-radius: 8px;">Tìm</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="table-responsive px-1">
+        <table class="table table-custom text-center align-middle w-100">
+            <thead>
+                <tr>
+                    <th class="ps-3 text-start">Mã SV</th>
+                    <th class="text-start">Sinh viên</th>
+                    <th>Ngày sinh</th>
+                    <th>Lớp</th>
+                    <th>Liên hệ</th>
+                    <th>Trạng thái</th>
+                    <th class="pe-3">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="ps-3 text-start fw-bold" style="color: #555;">@Html.DisplayFor(modelItem => item.StudentId)</td>
+
+                        <td class="text-start">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar-sm shadow-sm">
+                                    <i class="fa-solid fa-user"></i>
+                                </div>
+                                <div>
+                                    <div class="fw-bold" style="color: #333;">@Html.DisplayFor(modelItem => item.FullName)</div>
+                                    <div class="text-muted" style="font-size: 0.8rem;">@Html.DisplayFor(modelItem => item.Email)</div>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td>@Html.DisplayFor(modelItem => item.DateOfBirth)</td>
+
+                        <td>
+                            <span class="badge" style="background-color: #e8f0fe; color: #1a73e8; padding: 6px 12px; border-radius: 6px;">
+                                @Html.DisplayFor(modelItem => item.SchoolClass.ClassName)
+                            </span>
+                        </td>
+
+                        <td class="text-muted"><i class="fa-solid fa-phone fa-xs me-1"></i> @Html.DisplayFor(modelItem => item.PhoneNumber)</td>
+
+                        <td>
+                            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25" style="padding: 6px 12px; border-radius: 6px;">
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </span>
+                        </td>
+
+                        <td class="pe-3">
+                            <div class="d-flex justify-content-center gap-2">
+                                <a asp-action="Details" asp-route-id="@item.StudentId" class="btn btn-sm btn-light text-info rounded-circle shadow-sm" style="width: 32px; height: 32px; padding: 5px;" title="Chi tiết">
+                                    <i class="fa-solid fa-circle-info"></i>
+                                </a>
+                                <a asp-action="Edit" asp-route-id="@item.StudentId" class="btn btn-sm btn-light text-warning rounded-circle shadow-sm" style="width: 32px; height: 32px; padding: 5px;" title="Sửa">
+                                    <i class="fa-solid fa-pen"></i>
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@item.StudentId" class="btn btn-sm btn-light text-danger rounded-circle shadow-sm" style="width: 32px; height: 32px; padding: 5px;" title="Xóa">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @if (ViewBag.TotalPages > 1)
+    {
+        <nav aria-label="Page navigation" class="mt-2 mb-5">
+            <ul class="pagination justify-content-center shadow-sm d-inline-flex p-2 bg-white" style="border-radius: 12px;">
+
+                <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
+                    <a class="page-link" asp-action="Index"
+                       asp-route-pageNumber="@(ViewBag.CurrentPage - 1)"
+                       asp-route-searchString="@ViewData["CurrentFilter"]"
+                       asp-route-classId="@ViewData["CurrentClassId"]">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </a>
+                </li>
+
+                @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                {
+                    <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                        <a class="page-link" asp-action="Index"
+                           asp-route-pageNumber="@i"
+                           asp-route-searchString="@ViewData["CurrentFilter"]"
+                           asp-route-classId="@ViewData["CurrentClassId"]">@i</a>
+                    </li>
+                }
+
+                <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
+                    <a class="page-link" asp-action="Index"
+                       asp-route-pageNumber="@(ViewBag.CurrentPage + 1)"
+                       asp-route-searchString="@ViewData["CurrentFilter"]"
+                       asp-route-classId="@ViewData["CurrentClassId"]">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+    }
+
+    <div class="modal fade" id="importExcelModal" tabindex="-1" aria-labelledby="importExcelModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow" style="border-radius: 15px;">
+
+                <div class="modal-header bg-success text-white" style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                    <h5 class="modal-title fw-bold" id="importExcelModalLabel"><i class="fa-solid fa-file-import me-2"></i>Nhập dữ liệu Sinh viên</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <form asp-action="ImportExcel" method="post" enctype="multipart/form-data">
+                    <div class="modal-body p-4">
+
+                        <div class="alert alert-success border-0 bg-success bg-opacity-10 d-flex align-items-center mb-4" style="border-radius: 10px;">
+                            <div class="me-3 text-success">
+                                <i class="fa-solid fa-circle-down fa-2x"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-1 text-success">Bước 1: Tải File Mẫu</h6>
+                                <p class="mb-2" style="font-size: 0.9rem;">Vui lòng tải file Excel mẫu về và điền dữ liệu theo đúng định dạng các cột.</p>
+                                <a asp-action="DownloadTemplate" class="btn btn-sm btn-success fw-bold rounded-pill px-3 shadow-sm">
+                                    <i class="fa-solid fa-download me-1"></i> Tải Template.xlsx
+                                </a>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h6 class="fw-bold text-dark mb-2"><i class="fa-solid fa-cloud-arrow-up text-primary me-2"></i>Bước 2: Chọn file tải lên <span class="text-danger">*</span></h6>
+                            <input type="file" name="file" id="file" class="form-control form-control-lg bg-light border-0 shadow-sm" accept=".xlsx, .xls" required style="border-radius: 10px;" />
+                            <small class="text-muted mt-2 d-block"><i class="fa-solid fa-circle-info me-1"></i>Hệ thống sẽ tự động bỏ qua nếu Mã SV đã tồn tại.</small>
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer bg-light border-0" style="border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;">
+                        <button type="button" class="btn btn-secondary px-4 fw-bold shadow-sm" data-bs-dismiss="modal" style="border-radius: 8px;">Hủy</button>
+                        <button type="submit" class="btn btn-primary px-4 fw-bold shadow-sm" style="border-radius: 8px;">
+                            <i class="fa-solid fa-check-circle me-1"></i> Bắt đầu Nhập
+                        </button>
+                    </div>
+                </form>
+
+            </div>
         </div>
     </div>
 </div>
-@if (ViewBag.TotalPages > 1)
-{
-    <nav aria-label="Page navigation" class="mt-4 mb-5">
-        <ul class="pagination justify-content-center">
-
-            <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
-                <a class="page-link shadow-sm" asp-action="Index"
-                   asp-route-pageNumber="@(ViewBag.CurrentPage - 1)"
-                   asp-route-searchString="@ViewData["CurrentFilter"]"
-                   asp-route-classId="@ViewData["CurrentClassId"]">
-                    <i class="fa-solid fa-chevron-left"></i> Trước
-                </a>
-            </li>
-
-            @for (int i = 1; i <= ViewBag.TotalPages; i++)
-            {
-                <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
-                    <a class="page-link shadow-sm" asp-action="Index"
-                       asp-route-pageNumber="@i"
-                       asp-route-searchString="@ViewData["CurrentFilter"]"
-                       asp-route-classId="@ViewData["CurrentClassId"]">@i</a>
-                </li>
-            }
-
-            <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
-                <a class="page-link shadow-sm" asp-action="Index"
-                   asp-route-pageNumber="@(ViewBag.CurrentPage + 1)"
-                   asp-route-searchString="@ViewData["CurrentFilter"]"
-                   asp-route-classId="@ViewData["CurrentClassId"]">
-                    Sau <i class="fa-solid fa-chevron-right"></i>
-                </a>
-            </li>
-
-        </ul>
-    </nav>
-}

@@ -1,47 +1,133 @@
-﻿@model UniversityManagementSystem.Models.Faculty
+﻿@* @model UniversityManagementSystem.Models.Faculty
 
 @{
-    ViewData["Title"] = "Chi tiết Khoa";
+    ViewData["Title"] = "Chi tiết Khoa / Tổ";
 }
 
-<div class="container pt-4">
+<div class="container-fluid pt-4 pb-5">
     <div class="row justify-content-center">
-        <div class="col-md-7">
-            <div class="card shadow border-0">
-                <div class="card-header bg-info text-white">
-                    <h4 class="mb-0"><i class="fa-solid fa-circle-info me-2"></i>Thông tin chi tiết Khoa</h4>
-                </div>
-                <div class="card-body p-4">
-                    <dl class="row mb-0 fs-5">
-                        <dt class="col-sm-4 text-muted">Mã Khoa</dt>
-                        <dd class="col-sm-8 fw-bold">@Html.DisplayFor(model => model.FacultyId)</dd>
+        <div class="col-md-8 col-lg-6">
 
-                        <dt class="col-sm-4 text-muted">Tên Khoa</dt>
-                        <dd class="col-sm-8 fw-bold text-primary">@Html.DisplayFor(model => model.FacultyName)</dd>
+            <div class="d-flex align-items-center mb-4">
+                <a asp-action="Index" class="btn btn-light shadow-sm text-secondary rounded-circle me-3" style="width: 40px; height: 40px; padding: 8px;">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </a>
+                <h3 class="text-primary mb-0 fw-bold">Hồ sơ Khoa / Tổ</h3>
+            </div>
 
-                        <dt class="col-sm-4 text-muted">Ngày thành lập</dt>
-                        <dd class="col-sm-8">
-                            @if (Model.EstablishedDate.HasValue)
-                            {
-                                /* Format lại ngày tháng cho dễ nhìn theo chuẩn Việt Nam */
-                                <span>@Model.EstablishedDate.Value.ToString("dd/MM/yyyy")</span>
-                            }
-                            else
-                            {
-                                <span class="text-secondary fst-italic">Chưa cập nhật</span>
-                            }
-                        </dd>
-                    </dl>
-                </div>
-                <div class="card-footer bg-light text-end p-3">
-                    <a asp-action="Index" class="btn btn-secondary me-2">
-                        <i class="fa-solid fa-arrow-left"></i> Quay lại
-                    </a>
-                    <a asp-action="Edit" asp-route-id="@Model?.FacultyId" class="btn btn-warning fw-bold">
-                        <i class="fa-solid fa-pen-to-square"></i> Cập nhật
-                    </a>
+            <div class="card shadow-sm border-0" style="border-radius: 15px; overflow: hidden;">
+                <div class="bg-info bg-gradient opacity-75" style="height: 120px;"></div>
+
+                <div class="card-body px-4 px-md-5 pb-5 pt-0">
+                    <div class="d-flex flex-column align-items-center text-center mb-4" style="margin-top: -55px;">
+
+                        <div class="bg-white rounded-circle p-2 shadow-sm mb-3" style="width: 110px; height: 110px; display: inline-block;">
+                            <div class="w-100 h-100 rounded-circle d-flex align-items-center justify-content-center" style="background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%); font-size: 2.5rem; color: #00bcd4;">
+                                <i class="fa-solid fa-building-columns"></i>
+                            </div>
+                        </div>
+
+                        <h3 class="fw-bold text-dark mb-2">@Model.FacultyName</h3>
+                        <span class="badge bg-light text-info border border-info border-opacity-25 px-4 py-2 fs-6 rounded-pill shadow-sm">
+                            <i class="fa-solid fa-fingerprint me-1"></i> Mã Khoa: @Model.FacultyId
+                        </span>
+                    </div>
+
+                    <hr class="text-muted opacity-25 mb-4">
+
+                    <h6 class="text-info fw-bold text-uppercase mb-3" style="letter-spacing: 0.5px;"><i class="fa-solid fa-circle-info me-2"></i>Thông tin thành lập</h6>
+                    <div class="bg-light p-4 rounded-3 border border-info border-opacity-10">
+                        <ul class="list-unstyled mb-0">
+                            <li class="d-flex align-items-center">
+                                <div class="bg-white rounded d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 45px; height: 45px;">
+                                    <i class="fa-regular fa-calendar-days text-primary fs-5"></i>
+                                </div>
+                                <div>
+                                    <small class="text-muted d-block fw-semibold" style="font-size: 0.85rem;">Ngày kỷ niệm thành lập</small>
+                                    <span class="fw-bold text-dark" style="font-size: 1.15rem;">
+                                        @if (Model.EstablishedDate.HasValue)
+                                        {
+                                            @Model.EstablishedDate.Value.ToString("dd/MM/yyyy")
+                                        }
+                                        else
+                                        {
+                                            <span class="text-secondary fst-italic">Chưa cập nhật dữ liệu</span>
+                                        }
+                                    </span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="d-flex justify-content-end mt-5 pt-4 border-top">
+                        <a asp-action="Edit" asp-route-id="@Model?.FacultyId" class="btn text-dark px-5 py-2 fw-bold shadow-sm" style="background-color: #ffc107; border-radius: 10px; font-size: 1.05rem;">
+                            <i class="fa-solid fa-pen-to-square me-2"></i> CẬP NHẬT THÔNG TIN
+                        </a>
+                    </div>
+
                 </div>
             </div>
+
+        </div>
+    </div>
+</div> *@
+@model UniversityManagementSystem.Models.Faculty
+
+@{
+    ViewData["Title"] = "Chi tiết Khoa / Tổ";
+}
+
+<div class="container-fluid pt-4 pb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+
+            <div class="d-flex align-items-center mb-4">
+                <a asp-action="Index" class="btn btn-light shadow-sm text-secondary rounded-circle me-3" style="width: 40px; height: 40px; padding: 8px;">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </a>
+                <h3 class="text-primary mb-0 fw-bold">Hồ sơ Khoa / Tổ</h3>
+            </div>
+
+            <div class="card shadow-sm border-0" style="border-radius: 15px; overflow: hidden;">
+
+                <div class="bg-info bg-gradient p-4 p-md-5 d-flex flex-column flex-sm-row align-items-center text-center text-sm-start">
+                    <div class="bg-white rounded-circle d-flex align-items-center justify-content-center shadow-sm mb-3 mb-sm-0 me-sm-4 flex-shrink-0" style="width: 90px; height: 90px; font-size: 2.5rem; color: #0dcaf0;">
+                        <i class="fa-solid fa-building-columns"></i>
+                    </div>
+                    <div>
+                        <h2 class="fw-bold text-white mb-2">@Model.FacultyName</h2>
+                        <span class="badge bg-white text-info px-3 py-2 fs-6 rounded-pill shadow-sm">
+                            <i class="fa-solid fa-fingerprint me-1"></i> Mã Khoa: @Model.FacultyId
+                        </span>
+                    </div>
+                </div>
+
+                <div class="card-body p-4 p-md-5">
+                    <h6 class="text-info fw-bold text-uppercase mb-3" style="letter-spacing: 0.5px;"><i class="fa-solid fa-circle-info me-2"></i>Thông tin thành lập</h6>
+                    <div class="bg-light p-4 rounded-3 border border-info border-opacity-10">
+                        <ul class="list-unstyled mb-0">
+                            <li class="d-flex align-items-center">
+                                <div class="bg-white rounded d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 45px; height: 45px;">
+                                    <i class="fa-regular fa-calendar-days text-primary fs-5"></i>
+                                </div>
+                                <div>
+                                    <small class="text-muted d-block fw-semibold" style="font-size: 0.85rem;">Ngày kỷ niệm thành lập</small>
+                                    <span class="fw-bold text-dark" style="font-size: 1.15rem;">
+                                        @(Model.EstablishedDate.HasValue? Model.EstablishedDate.Value.ToString("dd/MM/yyyy") : "Chưa cập nhật dữ liệu")
+                                    </span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="d-flex justify-content-end mt-5 pt-4 border-top">
+                        <a asp-action="Edit" asp-route-id="@Model?.FacultyId" class="btn text-dark px-5 py-2 fw-bold shadow-sm" style="background-color: #ffc107; border-radius: 10px; font-size: 1.05rem;">
+                            <i class="fa-solid fa-pen-to-square me-2"></i> CẬP NHẬT THÔNG TIN
+                        </a>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>

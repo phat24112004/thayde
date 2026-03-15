@@ -1,81 +1,151 @@
 ﻿@model UniversityManagementSystem.Models.Student
 
 @{
-    ViewData["Title"] = "Cập nhật Sinh viên";
+    ViewData["Title"] = "Cập nhật Hồ sơ Sinh viên";
 }
 
-<div class="container pt-4 mb-5">
+<div class="container-fluid pt-4 pb-5">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow border-0">
-                <div class="card-header bg-warning text-dark">
-                    <h4 class="mb-0"><i class="fa-solid fa-user-pen me-2"></i>Cập nhật Hồ sơ Sinh viên</h4>
+        <div class="col-md-10 col-lg-8">
+
+            <div class="d-flex align-items-center mb-3">
+                <a asp-action="Index" class="btn btn-light shadow-sm text-secondary rounded-circle me-3" style="width: 40px; height: 40px; padding: 8px;">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </a>
+                <h3 class="text-warning mb-0 fw-bold">Cập nhật Sinh viên</h3>
+            </div>
+
+            <div class="card shadow-sm border-0" style="border-radius: 15px; overflow: hidden;">
+                <div class="card-header bg-warning text-dark py-3">
+                    <h5 class="mb-0 fw-bold"><i class="fa-solid fa-user-pen me-2"></i>Chỉnh sửa Hồ sơ</h5>
                 </div>
-                <div class="card-body p-4">
+
+                <div class="card-body p-4 p-md-5">
                     <form asp-action="Edit">
-                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-3 mb-4"></div>
 
                         <input type="hidden" asp-for="StudentId" />
 
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label fw-bold">Mã Sinh viên</label>
-                                <input class="form-control bg-light" value="@Model.StudentId" readonly />
-                                <small class="text-muted">Mã sinh viên không thể thay đổi.</small>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label asp-for="FullName" class="form-label fw-bold">Họ và Tên</label>
-                                <input asp-for="FullName" class="form-control" />
-                                <span asp-validation-for="FullName" class="text-danger"></span>
+                        <h6 class="text-warning fw-bold text-uppercase mb-3" style="letter-spacing: 0.5px;">1. Thông tin cơ bản</h6>
+                        <div class="bg-light p-4 rounded-3 border border-warning border-opacity-25 mb-4">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold text-secondary">Mã Sinh viên</label>
+                                    <div class="input-group shadow-sm" style="border-radius: 8px; overflow: hidden;">
+                                        <span class="input-group-text bg-light border-0"><i class="fa-solid fa-lock text-muted"></i></span>
+                                        <input value="@Model.StudentId" class="form-control bg-light border-0 text-muted fw-bold" readonly />
+                                    </div>
+                                    <small class="text-muted mt-1 d-block" style="font-size: 0.75rem;">Mã SV là định danh không thể thay đổi.</small>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="FullName" class="form-label fw-bold text-secondary">Họ và Tên <span class="text-danger">*</span></label>
+                                    <div class="input-group shadow-sm" style="border-radius: 8px; overflow: hidden;">
+                                        <span class="input-group-text bg-white border-0"><i class="fa-solid fa-user text-muted"></i></span>
+                                        <input asp-for="FullName" class="form-control border-0" placeholder="Nguyễn Văn A" />
+                                    </div>
+                                    <span asp-validation-for="FullName" class="text-danger d-block mt-1" style="font-size: 0.85rem;"></span>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="DateOfBirth" class="form-label fw-bold text-secondary">Ngày sinh</label>
+                                    <input asp-for="DateOfBirth" class="form-control shadow-sm border-0" type="date" style="border-radius: 8px;" />
+                                    <span asp-validation-for="DateOfBirth" class="text-danger d-block mt-1" style="font-size: 0.85rem;"></span>
+                                </div>
+
+                                <div class="col-md-6 mb-3 d-flex flex-column justify-content-center">
+                                    <label class="form-label fw-bold text-secondary">Giới tính</label>
+                                    <div class="d-flex gap-4 mt-2">
+                                        <div class="form-check">
+                                            <input class="form-check-input shadow-sm" type="radio" asp-for="Gender" value="Nam" id="genderMale">
+                                            <label class="form-check-label fw-semibold" for="genderMale">
+                                                <i class="fa-solid fa-mars text-primary me-1"></i> Nam
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input shadow-sm" type="radio" asp-for="Gender" value="Nữ" id="genderFemale">
+                                            <label class="form-check-label fw-semibold" for="genderFemale">
+                                                <i class="fa-solid fa-venus text-danger me-1"></i> Nữ
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input shadow-sm" type="radio" asp-for="Gender" value="Khác" id="genderOther">
+                                            <label class="form-check-label fw-semibold" for="genderOther">Khác</label>
+                                        </div>
+                                    </div>
+                                    <span asp-validation-for="Gender" class="text-danger d-block mt-1" style="font-size: 0.85rem;"></span>
+                                </div>
                             </div>
                         </div>
 
+                        <h6 class="text-warning fw-bold text-uppercase mb-3" style="letter-spacing: 0.5px;">2. Liên lạc & Quá trình học</h6>
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label asp-for="DateOfBirth" class="form-label fw-bold">Ngày sinh</label>
-                                <input asp-for="DateOfBirth" class="form-control" type="date" />
-                                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                                <label asp-for="Email" class="form-label fw-bold text-secondary">Email</label>
+                                <div class="input-group shadow-sm" style="border-radius: 8px; overflow: hidden;">
+                                    <span class="input-group-text bg-light border-0"><i class="fa-solid fa-envelope text-muted"></i></span>
+                                    <input asp-for="Email" class="form-control bg-light border-0" placeholder="name@domain.com" />
+                                </div>
+                                <span asp-validation-for="Email" class="text-danger d-block mt-1" style="font-size: 0.85rem;"></span>
                             </div>
+
                             <div class="col-md-6 mb-3">
-                                <label asp-for="ClassId" class="form-label fw-bold">Lớp học</label>
-                                <select asp-for="ClassId" class="form-select" asp-items="ViewBag.ClassId"></select>
-                                <span asp-validation-for="ClassId" class="text-danger"></span>
+                                <label asp-for="PhoneNumber" class="form-label fw-bold text-secondary">Số điện thoại</label>
+                                <div class="input-group shadow-sm" style="border-radius: 8px; overflow: hidden;">
+                                    <span class="input-group-text bg-light border-0"><i class="fa-solid fa-phone text-muted"></i></span>
+                                    <input asp-for="PhoneNumber" class="form-control bg-light border-0" placeholder="0909..." />
+                                </div>
+                                <span asp-validation-for="PhoneNumber" class="text-danger d-block mt-1" style="font-size: 0.85rem;"></span>
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                                <label asp-for="Address" class="form-label fw-bold text-secondary">Địa chỉ cư trú</label>
+                                <input asp-for="Address" class="form-control shadow-sm bg-light border-0" style="border-radius: 8px;" placeholder="Số nhà, đường, quận/huyện..." />
+                                <span asp-validation-for="Address" class="text-danger d-block mt-1" style="font-size: 0.85rem;"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="ClassId" class="form-label fw-bold text-secondary">Phân Lớp <span class="text-danger">*</span></label>
+                                <div class="input-group shadow-sm" style="border-radius: 8px; overflow: hidden;">
+                                    <span class="input-group-text bg-light border-0"><i class="fa-solid fa-chalkboard-user text-muted"></i></span>
+                                    <select asp-for="ClassId" class="form-select bg-light border-0" asp-items="ViewBag.ClassId">
+                                        <option value="">-- Chọn Lớp học --</option>
+                                    </select>
+                                </div>
+                                <span asp-validation-for="ClassId" class="text-danger d-block mt-1" style="font-size: 0.85rem;"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Status" class="form-label fw-bold text-secondary">Trạng thái học tập</label>
+                                <div class="input-group shadow-sm" style="border-radius: 8px; overflow: hidden;">
+                                    <span class="input-group-text bg-light border-0"><i class="fa-solid fa-tags text-muted"></i></span>
+                                    <select asp-for="Status" class="form-select bg-light border-0">
+                                        <option value="Đang học">Đang học</option>
+                                        <option value="Bảo lưu">Bảo lưu</option>
+                                        <option value="Đã tốt nghiệp">Đã tốt nghiệp</option>
+                                        <option value="Đuổi học">Đuổi học</option>
+                                        <option value="Thôi học">Thôi học tự nguyện</option>
+                                    </select>
+                                </div>
+                                <span asp-validation-for="Status" class="text-danger d-block mt-1" style="font-size: 0.85rem;"></span>
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label asp-for="Email" class="form-label fw-bold">Email</label>
-                                <input asp-for="Email" class="form-control" type="email" />
-                                <span asp-validation-for="Email" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label asp-for="PhoneNumber" class="form-label fw-bold">Số điện thoại</label>
-                                <input asp-for="PhoneNumber" class="form-control" />
-                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-8 mb-3">
-                                <label asp-for="Address" class="form-label fw-bold">Địa chỉ</label>
-                                <input asp-for="Address" class="form-control" />
-                                <span asp-validation-for="Address" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <label asp-for="Status" class="form-label fw-bold">Trạng thái</label>
-                                <select asp-for="Status" class="form-select">
-                                    <option value="Đang học">Đang học</option>
-                                    <option value="Bảo lưu">Bảo lưu</option>
-                                    <option value="Đã tốt nghiệp">Đã tốt nghiệp</option>
-                                    <option value="Đuổi học">Đuổi học</option>
-                                </select>
-                                <span asp-validation-for="Status" class="text-danger"></span>
-                            </div>
-                        </div>
-
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                            <a asp-action="Index" class="btn btn-secondary me-2"><i class="fa-solid fa-arrow-left"></i> Quay lại</a>
-                            <button type="submit" class="btn btn-warning px-4 fw-bold"><i class="fa-solid fa-save"></i> Lưu thay đổi</button>
+                        <div class="d-flex justify-content-end mt-4 pt-4 border-top">
+                            <button type="submit" class="btn text-dark px-5 py-2 fw-bold shadow" style="background-color: #ffc107; border-radius: 10px; font-size: 1.1rem;">
+                                <i class="fa-solid fa-floppy-disk me-2"></i> LƯU THAY ĐỔI
+                            </button>
                         </div>
                     </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

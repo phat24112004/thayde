@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using UniversityManagementSystem.Models;
 
 namespace UniversityManagementSystem.Controllers
@@ -161,18 +162,44 @@ namespace UniversityManagementSystem.Controllers
         }
 
         // POST: Faculties/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //{
+        //    var faculty = await _context.Faculties.FindAsync(id);
+        //    if (faculty != null)
+        //    {
+        //        _context.Faculties.Remove(faculty);
+        //        await _context.SaveChangesAsync();
+        //        // Đặt ngay sau dòng await _context.SaveChangesAsync();
+        //        TempData["SuccessMessage"] = "Đã xóa khoa khỏi hệ thống!";
+        //    }
+        //    return RedirectToAction(nameof(Index));
+        //}
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteConfirmed(int id) // Thay 'int id' bằng kiểu dữ liệu đúng của bạn (nếu là chuỗi thì string id)
         {
-            var faculty = await _context.Faculties.FindAsync(id);
-            if (faculty != null)
+            try
             {
-                _context.Faculties.Remove(faculty);
-                await _context.SaveChangesAsync();
-                // Đặt ngay sau dòng await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = "Đã xóa khoa khỏi hệ thống!";
+                var faculty = await _context.Faculties.FindAsync(id);
+                if (faculty != null)
+                {
+                    _context.Faculties.Remove(faculty);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Đã xóa Khoa thành công!";
+                }
             }
+            catch (DbUpdateException) // BẮT LỖI KHÓA NGOẠI TẠI ĐÂY
+            {
+                TempData["ErrorMessage"] = "Không thể xóa! Khoa này đang chứa các Lớp học trực thuộc. Vui lòng chuyển hoặc xóa các Lớp học trước.";
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Lỗi hệ thống: " + ex.Message;
+            }
+
             return RedirectToAction(nameof(Index));
         }
 

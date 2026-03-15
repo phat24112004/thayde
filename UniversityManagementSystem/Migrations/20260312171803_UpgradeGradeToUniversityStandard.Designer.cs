@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UniversityManagementSystem.Models;
 
@@ -11,9 +12,11 @@ using UniversityManagementSystem.Models;
 namespace UniversityManagementSystem.Migrations
 {
     [DbContext(typeof(UniversityManagementDbContext))]
-    partial class UniversityManagementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260312171803_UpgradeGradeToUniversityStandard")]
+    partial class UpgradeGradeToUniversityStandard
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -133,7 +136,7 @@ namespace UniversityManagementSystem.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<int>("ClassId")
+                    b.Property<int?>("ClassId")
                         .HasColumnType("int")
                         .HasColumnName("ClassID");
 
@@ -148,9 +151,6 @@ namespace UniversityManagementSystem.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Gender")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
                         .HasMaxLength(20)
@@ -294,8 +294,6 @@ namespace UniversityManagementSystem.Migrations
                     b.HasOne("UniversityManagementSystem.Models.SchoolClass", "SchoolClass")
                         .WithMany("Students")
                         .HasForeignKey("ClassId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
                         .HasConstraintName("FK__Students__ClassI__3C69FB99");
 
                     b.Navigation("SchoolClass");

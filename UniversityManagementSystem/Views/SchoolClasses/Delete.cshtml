@@ -1,62 +1,56 @@
 ﻿@model UniversityManagementSystem.Models.SchoolClass
 
 @{
-    ViewData["Title"] = "Xác nhận Xóa Lớp";
+    ViewData["Title"] = "Xóa Lớp học";
 }
 
-<div class="container pt-5 pb-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6 text-center">
+<div class="container-fluid d-flex justify-content-center align-items-center" style="min-height: 75vh;">
 
-            <div class="mb-4">
-                <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-danger bg-opacity-10 text-danger" style="width: 90px; height: 90px;">
-                    <i class="fa-solid fa-triangle-exclamation fa-3x"></i>
-                </div>
+    <div class="card border-0 shadow-lg" style="max-width: 450px; width: 100%; border-radius: 20px; overflow: hidden;">
+
+        <div class="bg-danger bg-gradient text-white text-center py-4">
+            <div class="bg-white text-danger rounded-circle d-inline-flex align-items-center justify-content-center mb-2 shadow" style="width: 70px; height: 70px;">
+                <i class="fa-solid fa-trash-can fa-2x"></i>
             </div>
+            <h4 class="mb-0 fw-bold">Xác nhận xóa Lớp học?</h4>
+        </div>
 
-            <h2 class="fw-bolder mb-3">Xóa lớp học này?</h2>
-            <p class="text-muted fs-5 mb-4">
-                Hành động này <strong class="text-danger">không thể hoàn tác</strong>. Dữ liệu của lớp
-                <strong class="text-dark fs-4">@Model.ClassName</strong> sẽ biến mất vĩnh viễn.
+        <div class="card-body p-4 text-center">
+            <p class="text-muted mb-4" style="font-size: 0.95rem;">
+                Hành động này <strong>không thể hoàn tác</strong>. Dữ liệu của Lớp học này sẽ bị xóa vĩnh viễn khỏi hệ thống.<br />
+                <small class="text-danger">(Lưu ý: Đảm bảo không còn Học sinh nào thuộc lớp này trước khi xóa)</small>
             </p>
 
-            <div class="card shadow-lg border-danger border-opacity-50 text-start">
-                <div class="card-body p-4 bg-light rounded">
-                    <form asp-action="Delete">
-                        <input type="hidden" asp-for="ClassId" />
-
-                        <div class="mb-4">
-                            <label class="form-label text-muted">Vui lòng nhập <span class="user-select-all text-danger fw-bold bg-danger bg-opacity-10 px-2 py-1 rounded border border-danger border-opacity-25">@Model.ClassName</span> để xác nhận:</label>
-                            <input type="text" id="confirmInputClass" class="form-control form-control-lg border-danger border-opacity-50" autocomplete="off" placeholder="Nhập tên lớp..." />
-                        </div>
-
-                        <div class="d-grid gap-3">
-                            <button type="submit" id="btnDeleteClass" class="btn btn-danger btn-lg fw-bold shadow-sm" disabled>
-                                <i class="fa-solid fa-trash-can me-2"></i> Xác nhận Xóa Lớp học
-                            </button>
-                            <a asp-action="Index" class="btn btn-outline-secondary btn-lg">
-                                Hủy và Quay lại
-                            </a>
-                        </div>
-                    </form>
+            <div class="bg-light rounded-3 p-3 mb-4 text-start border border-danger border-opacity-25" style="box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
+                <div class="d-flex align-items-center mb-2">
+                    <i class="fa-solid fa-hashtag text-secondary me-2" style="width: 20px;"></i>
+                    <span class="text-muted me-2">Mã Lớp:</span>
+                    <strong class="text-dark">@Model.ClassId</strong>
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                    <i class="fa-solid fa-chalkboard text-secondary me-2" style="width: 20px;"></i>
+                    <span class="text-muted me-2">Tên Lớp:</span>
+                    <strong class="text-danger fs-5">@Model.ClassName</strong>
+                </div>
+                <div class="d-flex align-items-center">
+                    <i class="fa-solid fa-layer-group text-secondary me-2" style="width: 20px;"></i>
+                    <span class="text-muted me-2">Thuộc Tổ / Khối:</span>
+                    <strong class="text-dark">@Model.Faculty?.FacultyName</strong>
                 </div>
             </div>
+
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="ClassId" />
+
+                <div class="d-flex justify-content-center gap-3">
+                    <a asp-action="Index" class="btn btn-light border shadow-sm px-4 py-2 fw-bold" style="border-radius: 10px; color: #555;">
+                         Quay lại
+                    </a>
+                    <button type="submit" class="btn btn-danger shadow-sm px-4 py-2 fw-bold" style="border-radius: 10px;">
+                        <i class="fa-solid fa-trash me-1"></i> Xóa 
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
-
-@section Scripts {
-    <script>
-        const confirmInput = document.getElementById('confirmInputClass');
-        const btnDelete = document.getElementById('btnDeleteClass');
-        const targetName = "@Html.Raw(Model.ClassName)";
-
-        confirmInput.addEventListener('input', function() {
-            if (this.value.trim() === targetName.trim()) {
-                btnDelete.removeAttribute('disabled');
-            } else {
-                btnDelete.setAttribute('disabled', 'true');
-            }
-        });
-    </script>
-}

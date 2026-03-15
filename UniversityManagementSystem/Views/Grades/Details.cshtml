@@ -1,53 +1,116 @@
 ﻿@model UniversityManagementSystem.Models.Grade
 
 @{
-    ViewData["Title"] = "Chi tiết Điểm";
+    ViewData["Title"] = "Chi tiết Điểm số";
 }
 
-<div class="container pt-4 mb-5">
+<div class="container-fluid pt-4 pb-5">
     <div class="row justify-content-center">
-        <div class="col-md-7">
-            <div class="card shadow border-0">
-                <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
-                    <h4 class="mb-0"><i class="fa-solid fa-star-half-stroke me-2"></i>Kết quả Học tập</h4>
+        <div class="col-md-10 col-lg-8">
 
-                    @if (Model.Score >= 5)
-                    {
-                        <span class="badge bg-success fs-6"><i class="fa-solid fa-check me-1"></i> Qua môn</span>
-                    }
-                    else
-                    {
-                        <span class="badge bg-danger fs-6"><i class="fa-solid fa-xmark me-1"></i> Học lại</span>
-                    }
-                </div>
-                <div class="card-body p-4">
-                    <div class="text-center mb-4">
-                        <h1 class="display-1 fw-bolder @(Model.Score >= 5 ? "text-success" : "text-danger")">
-                            @Html.DisplayFor(model => model.Score)
-                        </h1>
-                        <p class="text-muted">Điểm tổng kết</p>
+            <div class="d-flex align-items-center mb-4">
+                <a asp-action="Index" class="btn btn-light shadow-sm text-secondary rounded-circle me-3" style="width: 40px; height: 40px; padding: 8px;">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </a>
+                <h3 class="text-primary mb-0 fw-bold">Chi tiết Bảng điểm</h3>
+            </div>
+
+            <div class="card shadow-sm border-0" style="border-radius: 15px; overflow: hidden;">
+
+                <div class="@(Model.TotalScore >= 5 ? "bg-success" : "bg-danger") bg-gradient p-4 p-md-5 d-flex flex-column flex-sm-row align-items-center text-center text-sm-start">
+
+                    <div class="bg-white rounded-circle d-flex align-items-center justify-content-center shadow-sm mb-3 mb-sm-0 me-sm-4 flex-shrink-0" style="width: 100px; height: 100px; font-size: 3.5rem; font-weight: 900; color: @(Model.TotalScore >= 5 ? "#198754" : "#dc3545");">
+                        @(string.IsNullOrEmpty(Model.LetterGrade) ? "-" : Model.LetterGrade)
                     </div>
 
-                    <dl class="row fs-5 bg-light p-3 rounded">
-                        <dt class="col-sm-4 text-muted">Mã SV</dt>
-                        <dd class="col-sm-8 fw-bold">@Html.DisplayFor(model => model.StudentId)</dd>
+                    <div>
+                        <h2 class="fw-bold text-white mb-2">@Html.DisplayFor(model => model.Student.FullName)</h2>
+                        <span class="badge bg-white text-dark px-3 py-2 fs-6 rounded-pill shadow-sm">
+                            <i class="fa-solid fa-id-card me-1"></i> SV: @Html.DisplayFor(model => model.StudentId)
+                        </span>
+                    </div>
 
-                        <dt class="col-sm-4 text-muted">Họ và Tên</dt>
-                        <dd class="col-sm-8 fw-bold text-primary">@Html.DisplayFor(model => model.Student.FullName)</dd>
-
-                        <dt class="col-sm-4 text-muted">Môn học</dt>
-                        <dd class="col-sm-8 fw-bold text-info">@Html.DisplayFor(model => model.Subject.SubjectName)</dd>
-                    </dl>
+                    <div class="ms-sm-auto mt-3 mt-sm-0">
+                        @if (Model.TotalScore >= 5)
+                        {
+                            <span class="badge bg-white text-success px-4 py-2 rounded-pill shadow-sm fs-5"><i class="fa-solid fa-check-circle me-1"></i> ĐẠT (QUA MÔN)</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-white text-danger px-4 py-2 rounded-pill shadow-sm fs-5" style="animation: pulse 2s infinite;"><i class="fa-solid fa-triangle-exclamation me-1"></i> HỌC LẠI</span>
+                        }
+                    </div>
                 </div>
-                <div class="card-footer bg-light text-end p-3">
-                    <a asp-action="Index" class="btn btn-secondary me-2">
-                        <i class="fa-solid fa-arrow-left"></i> Quay lại danh sách
-                    </a>
-                    <a asp-action="Edit" asp-route-id="@Model?.GradeId" class="btn btn-warning fw-bold">
-                        <i class="fa-solid fa-pen-to-square"></i> Cập nhật điểm
-                    </a>
+
+                <div class="card-body px-4 px-md-5 py-5">
+                    <div class="row g-4">
+
+                        <div class="col-md-6">
+                            <h6 class="text-primary fw-bold text-uppercase mb-3" style="letter-spacing: 0.5px;"><i class="fa-solid fa-book-bookmark me-2"></i>Thông tin Học phần</h6>
+                            <div class="bg-light p-4 rounded-3 border border-primary border-opacity-10 h-100">
+                                <ul class="list-unstyled mb-0">
+                                    <li class="mb-4 d-flex align-items-center">
+                                        <div class="bg-white rounded d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 40px; height: 40px;"><i class="fa-solid fa-book text-info fs-5"></i></div>
+                                        <div>
+                                            <small class="text-muted d-block fw-semibold" style="font-size: 0.85rem;">Môn học</small>
+                                            <span class="fw-bold text-primary" style="font-size: 1.05rem;">@Html.DisplayFor(model => model.Subject.SubjectName)</span>
+                                        </div>
+                                    </li>
+                                    <li class="mb-4 d-flex align-items-center">
+                                        <div class="bg-white rounded d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 40px; height: 40px;"><i class="fa-solid fa-calendar-week text-warning fs-5"></i></div>
+                                        <div>
+                                            <small class="text-muted d-block fw-semibold" style="font-size: 0.85rem;">Học kỳ</small>
+                                            <span class="fw-bold text-dark" style="font-size: 1.05rem;">@Html.DisplayFor(model => model.Semester)</span>
+                                        </div>
+                                    </li>
+                                    <li class="d-flex align-items-center">
+                                        <div class="bg-white rounded d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 40px; height: 40px;"><i class="fa-regular fa-calendar-check text-success fs-5"></i></div>
+                                        <div>
+                                            <small class="text-muted d-block fw-semibold" style="font-size: 0.85rem;">Ngày thi</small>
+                                            <span class="fw-bold text-dark" style="font-size: 1.05rem;">@(Model.ExamDate.HasValue? Model.ExamDate.Value.ToString("dd/MM/yyyy") : "Chưa cập nhật")</span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <h6 class="text-primary fw-bold text-uppercase mb-3" style="letter-spacing: 0.5px;"><i class="fa-solid fa-chart-line me-2"></i>Chi tiết Điểm số</h6>
+                            <div class="bg-light p-4 rounded-3 border border-primary border-opacity-10 h-100 d-flex flex-column justify-content-center">
+
+                                <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+                                    <span class="text-muted fw-semibold">Điểm Giữa kì 1:</span>
+                                    <span class="fw-bold fs-5 text-dark">@(Model.MidtermScore1?.ToString("0.00") ?? "-")</span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+                                    <span class="text-muted fw-semibold">Điểm Giữa kì 2:</span>
+                                    <span class="fw-bold fs-5 text-dark">@(Model.MidtermScore2?.ToString("0.00") ?? "-")</span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+                                    <span class="text-muted fw-semibold">Điểm Thi Cuối kì:</span>
+                                    <span class="fw-bold fs-5 text-danger">@(Model.FinalScore?.ToString("0.00") ?? "-")</span>
+                                </div>
+
+                                <div class="d-flex justify-content-between align-items-center mt-2 bg-white p-3 rounded shadow-sm border border-secondary border-opacity-25">
+                                    <span class="text-primary fw-bold text-uppercase">Tổng kết (Hệ 10):</span>
+                                    <span class="fw-black fs-3 @(Model.TotalScore >= 5 ? "text-success" : "text-danger")">
+                                        @(Model.TotalScore?.ToString("0.00") ?? "-")
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="d-flex justify-content-end mt-5 pt-4 border-top">
+                        <a asp-action="Edit" asp-route-id="@Model?.GradeId" class="btn text-dark px-5 py-2 fw-bold shadow-sm" style="background-color: #ffc107; border-radius: 10px; font-size: 1.05rem;">
+                            <i class="fa-solid fa-pen-to-square me-2"></i> CHỈNH SỬA ĐIỂM SỐ
+                        </a>
+                    </div>
                 </div>
             </div>
+
         </div>
     </div>
 </div>

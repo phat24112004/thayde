@@ -1,62 +1,55 @@
 ﻿@model UniversityManagementSystem.Models.Student
 
 @{
-    ViewData["Title"] = "Xóa Sinh viên";
+    ViewData["Title"] = "Xóa Học sinh";
 }
 
-<div class="container pt-5 pb-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6 text-center">
+<div class="container-fluid d-flex justify-content-center align-items-center" style="min-height: 75vh;">
 
-            <div class="mb-4">
-                <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-danger bg-opacity-10 text-danger" style="width: 90px; height: 90px;">
-                    <i class="fa-solid fa-user-xmark fa-3x"></i>
-                </div>
+    <div class="card border-0 shadow-lg" style="max-width: 450px; width: 100%; border-radius: 20px; overflow: hidden;">
+
+        <div class="bg-danger bg-gradient text-white text-center py-4">
+            <div class="bg-white text-danger rounded-circle d-inline-flex align-items-center justify-content-center mb-2 shadow" style="width: 70px; height: 70px;">
+                <i class="fa-solid fa-trash-can fa-2x"></i>
             </div>
+            <h4 class="mb-0 fw-bold">Xác nhận xóa dữ liệu?</h4>
+        </div>
 
-            <h2 class="fw-bolder mb-3">Xóa hồ sơ sinh viên?</h2>
-            <p class="text-muted fs-5 mb-4">
-                Hành động này <strong class="text-danger">không thể hoàn tác</strong>. Mọi dữ liệu (bao gồm cả điểm số) của sinh viên
-                <strong class="text-dark fs-4">@Model.FullName</strong> (@Model.StudentId) sẽ bị xóa vĩnh viễn.
+        <div class="card-body p-4 text-center">
+            <p class="text-muted mb-4" style="font-size: 0.95rem;">
+                Hành động này <strong>không thể hoàn tác</strong>. Mọi dữ liệu liên quan đến học sinh này sẽ bị xóa vĩnh viễn khỏi hệ thống.
             </p>
 
-            <div class="card shadow-lg border-danger border-opacity-50 text-start">
-                <div class="card-body p-4 bg-light rounded">
-                    <form asp-action="Delete">
-                        <input type="hidden" asp-for="StudentId" />
-
-                        <div class="mb-4">
-                            <label class="form-label text-muted">Vui lòng nhập họ tên <span class="user-select-all text-danger fw-bold bg-danger bg-opacity-10 px-2 py-1 rounded border border-danger border-opacity-25">@Model.FullName</span> để xác nhận:</label>
-                            <input type="text" id="confirmInputStudent" class="form-control form-control-lg border-danger border-opacity-50" autocomplete="off" placeholder="Nhập họ và tên..." />
-                        </div>
-
-                        <div class="d-grid gap-3">
-                            <button type="submit" id="btnDeleteStudent" class="btn btn-danger btn-lg fw-bold shadow-sm" disabled>
-                                <i class="fa-solid fa-trash-can me-2"></i> Xác nhận Xóa Sinh viên
-                            </button>
-                            <a asp-action="Index" class="btn btn-outline-secondary btn-lg">
-                                Hủy và Quay lại
-                            </a>
-                        </div>
-                    </form>
+            <div class="bg-light rounded-3 p-3 mb-4 text-start border border-danger border-opacity-25" style="box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
+                <div class="d-flex align-items-center mb-2">
+                    <i class="fa-solid fa-id-badge text-secondary me-2" style="width: 20px;"></i>
+                    <span class="text-muted me-2">Mã HS:</span>
+                    <strong class="text-dark">@Model.StudentId</strong>
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                    <i class="fa-solid fa-user text-secondary me-2" style="width: 20px;"></i>
+                    <span class="text-muted me-2">Họ tên:</span>
+                    <strong class="text-danger fs-5">@Model.FullName</strong>
+                </div>
+                <div class="d-flex align-items-center">
+                    <i class="fa-solid fa-chalkboard-user text-secondary me-2" style="width: 20px;"></i>
+                    <span class="text-muted me-2">Lớp:</span>
+                    <strong class="text-dark">@Model.SchoolClass?.ClassName</strong>
                 </div>
             </div>
+
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="StudentId" />
+
+                <div class="d-flex justify-content-center gap-3">
+                    <a asp-action="Index" class="btn btn-light border shadow-sm px-4 py-2 fw-bold" style="border-radius: 10px; color: #555;">
+                        Quay lại
+                    </a>
+                    <button type="submit" class="btn btn-danger shadow-sm px-4 py-2 fw-bold" style="border-radius: 10px;">
+                        <i class="fa-solid fa-trash me-1"></i> Xóa
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
-
-@section Scripts {
-    <script>
-        const confirmInput = document.getElementById('confirmInputStudent');
-        const btnDelete = document.getElementById('btnDeleteStudent');
-        const targetName = "@Html.Raw(Model.FullName)";
-
-        confirmInput.addEventListener('input', function() {
-            if (this.value.trim() === targetName.trim()) {
-                btnDelete.removeAttribute('disabled');
-            } else {
-                btnDelete.setAttribute('disabled', 'true');
-            }
-        });
-    </script>
-}

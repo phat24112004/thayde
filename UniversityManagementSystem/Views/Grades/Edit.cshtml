@@ -4,44 +4,107 @@
     ViewData["Title"] = "Cập nhật Điểm số";
 }
 
-<div class="container pt-4 mb-5">
+<div class="container-fluid pt-4 pb-5">
     <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow border-0">
-                <div class="card-header bg-warning text-dark">
-                    <h4 class="mb-0"><i class="fa-solid fa-pen-to-square me-2"></i>Cập nhật Điểm số</h4>
+        <div class="col-md-10 col-lg-8">
+
+            <div class="d-flex align-items-center mb-3">
+                <a asp-action="Index" class="btn btn-light shadow-sm text-secondary rounded-circle me-3" style="width: 40px; height: 40px; padding: 8px;">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </a>
+                <h3 class="text-warning mb-0 fw-bold">Chỉnh sửa Điểm số</h3>
+            </div>
+
+            <div class="card shadow-sm border-0" style="border-radius: 15px; overflow: hidden;">
+                <div class="card-header bg-warning text-dark py-3">
+                    <h5 class="mb-0 fw-bold"><i class="fa-solid fa-pen-to-square me-2"></i>Cập nhật kết quả học tập</h5>
                 </div>
-                <div class="card-body p-4">
+
+                <div class="card-body p-4 p-md-5">
                     <form asp-action="Edit">
-                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-3 mb-4"></div>
 
                         <input type="hidden" asp-for="GradeId" />
 
-                        <div class="mb-3">
-                            <label asp-for="StudentId" class="form-label fw-bold">Sinh viên</label>
-                            <select asp-for="StudentId" class="form-select" asp-items="ViewBag.StudentId"></select>
-                            <span asp-validation-for="StudentId" class="text-danger"></span>
+                        <div class="bg-light p-4 rounded-3 border border-warning border-opacity-25 mb-4">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="StudentId" class="form-label fw-bold text-secondary">Sinh viên</label>
+                                    <div class="input-group shadow-sm" style="border-radius: 8px; overflow: hidden;">
+                                        <span class="input-group-text bg-white border-0"><i class="fa-solid fa-user-graduate text-muted"></i></span>
+                                        <select asp-for="StudentId" class="form-select border-0" asp-items="ViewBag.StudentId"></select>
+                                    </div>
+                                    <span asp-validation-for="StudentId" class="text-danger d-block mt-1" style="font-size: 0.85rem;"></span>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="SubjectId" class="form-label fw-bold text-secondary">Môn học</label>
+                                    <div class="input-group shadow-sm" style="border-radius: 8px; overflow: hidden;">
+                                        <span class="input-group-text bg-white border-0"><i class="fa-solid fa-book text-muted"></i></span>
+                                        <select asp-for="SubjectId" class="form-select border-0" asp-items="ViewBag.SubjectId"></select>
+                                    </div>
+                                    <span asp-validation-for="SubjectId" class="text-danger d-block mt-1" style="font-size: 0.85rem;"></span>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label asp-for="SubjectId" class="form-label fw-bold">Môn học</label>
-                            <select asp-for="SubjectId" class="form-select" asp-items="ViewBag.SubjectId"></select>
-                            <span asp-validation-for="SubjectId" class="text-danger"></span>
+                        <h6 class="text-warning fw-bold text-uppercase mb-3" style="letter-spacing: 0.5px;">Bảng Điểm Chi Tiết</h6>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="MidtermScore1" class="form-label fw-bold text-secondary">Giữa kì 1</label>
+                                <div class="input-group shadow-sm" style="border-radius: 8px; overflow: hidden;">
+                                    <span class="input-group-text bg-light border-0"><i class="fa-solid fa-marker text-muted"></i></span>
+                                    <input asp-for="MidtermScore1" type="number" step="0.01" class="form-control bg-light border-0" placeholder="0 - 10" />
+                                </div>
+                                <span asp-validation-for="MidtermScore1" class="text-danger d-block mt-1" style="font-size: 0.85rem;"></span>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="MidtermScore2" class="form-label fw-bold text-secondary">Giữa kì 2</label>
+                                <div class="input-group shadow-sm" style="border-radius: 8px; overflow: hidden;">
+                                    <span class="input-group-text bg-light border-0"><i class="fa-solid fa-marker text-muted"></i></span>
+                                    <input asp-for="MidtermScore2" type="number" step="0.01" class="form-control bg-light border-0" placeholder="0 - 10" />
+                                </div>
+                                <span asp-validation-for="MidtermScore2" class="text-danger d-block mt-1" style="font-size: 0.85rem;"></span>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="FinalScore" class="form-label fw-bold text-danger">Điểm Cuối kì</label>
+                                <div class="input-group shadow-sm" style="border-radius: 8px; overflow: hidden;">
+                                    <span class="input-group-text bg-white border-0"><i class="fa-solid fa-star text-warning"></i></span>
+                                    <input asp-for="FinalScore" type="number" step="0.01" class="form-control border-0 fw-bold" placeholder="0 - 10" />
+                                </div>
+                                <span asp-validation-for="FinalScore" class="text-danger d-block mt-1" style="font-size: 0.85rem;"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3 mt-2">
+                                <label asp-for="ExamDate" class="form-label fw-bold text-secondary">Ngày thi</label>
+                                <input asp-for="ExamDate" class="form-control shadow-sm border-0 bg-light" type="date" style="border-radius: 8px;" />
+                                <span asp-validation-for="ExamDate" class="text-danger d-block mt-1" style="font-size: 0.85rem;"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3 mt-2">
+                                <label asp-for="Semester" class="form-label fw-bold text-secondary">Học kỳ <span class="text-danger">*</span></label>
+                                <input asp-for="Semester" class="form-control shadow-sm border-0 bg-light" placeholder="VD: Spring 2026" style="border-radius: 8px;" />
+                                <span asp-validation-for="Semester" class="text-danger d-block mt-1" style="font-size: 0.85rem;"></span>
+                            </div>
                         </div>
 
-                        <div class="mb-4">
-                            <label asp-for="Score" class="form-label fw-bold text-primary">Điểm số (Hệ 10)</label>
-                            <input asp-for="Score" class="form-control form-control-lg text-primary fw-bold" type="number" step="0.1" min="0" max="10" placeholder="0.0 - 10.0" />
-                            <span asp-validation-for="Score" class="text-danger"></span>
-                        </div>
-
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                            <a asp-action="Index" class="btn btn-secondary me-2"><i class="fa-solid fa-arrow-left"></i> Quay lại</a>
-                            <button type="submit" class="btn btn-warning px-4 fw-bold"><i class="fa-solid fa-save"></i> Lưu thay đổi</button>
+                        <div class="d-flex justify-content-end mt-4 pt-3 border-top">
+                            <button type="submit" class="btn text-dark px-5 py-2 fw-bold shadow" style="background-color: #ffc107; border-radius: 10px; font-size: 1.1rem;">
+                                <i class="fa-solid fa-save me-2"></i> LƯU ĐIỂM SỐ
+                            </button>
                         </div>
                     </form>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

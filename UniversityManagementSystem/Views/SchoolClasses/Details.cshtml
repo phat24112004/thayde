@@ -1,37 +1,126 @@
-﻿@model UniversityManagementSystem.Models.SchoolClass
+﻿@* @model UniversityManagementSystem.Models.SchoolClass
 
 @{
     ViewData["Title"] = "Chi tiết Lớp học";
 }
 
-<div class="container pt-4">
+<div class="container-fluid pt-4 pb-5">
     <div class="row justify-content-center">
-        <div class="col-md-7">
-            <div class="card shadow border-0">
-                <div class="card-header bg-info text-white">
-                    <h4 class="mb-0"><i class="fa-solid fa-users-rectangle me-2"></i>Thông tin chi tiết Lớp học</h4>
-                </div>
-                <div class="card-body p-4">
-                    <dl class="row mb-0 fs-5">
-                        <dt class="col-sm-4 text-muted">Mã Lớp</dt>
-                        <dd class="col-sm-8 fw-bold">@Html.DisplayFor(model => model.ClassId)</dd>
+        <div class="col-md-8 col-lg-6">
 
-                        <dt class="col-sm-4 text-muted">Tên Lớp</dt>
-                        <dd class="col-sm-8 fw-bold text-primary">@Html.DisplayFor(model => model.ClassName)</dd>
+            <div class="d-flex align-items-center mb-4">
+                <a asp-action="Index" class="btn btn-light shadow-sm text-secondary rounded-circle me-3" style="width: 40px; height: 40px; padding: 8px;">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </a>
+                <h3 class="text-primary mb-0 fw-bold">Hồ sơ Lớp học</h3>
+            </div>
 
-                        <dt class="col-sm-4 text-muted">Thuộc Khoa</dt>
-                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Faculty.FacultyName)</dd>
-                    </dl>
-                </div>
-                <div class="card-footer bg-light text-end p-3">
-                    <a asp-action="Index" class="btn btn-secondary me-2">
-                        <i class="fa-solid fa-arrow-left"></i> Quay lại
-                    </a>
-                    <a asp-action="Edit" asp-route-id="@Model?.ClassId" class="btn btn-warning fw-bold">
-                        <i class="fa-solid fa-pen-to-square"></i> Cập nhật
-                    </a>
+            <div class="card shadow-sm border-0" style="border-radius: 15px; overflow: hidden;">
+                <div class="bg-primary bg-gradient opacity-75" style="height: 120px;"></div>
+
+                <div class="card-body px-4 px-md-5 pb-5 pt-0">
+                    <div class="d-flex flex-column align-items-center text-center mb-4" style="margin-top: -55px;">
+
+                        <div class="bg-white rounded-circle p-2 shadow-sm mb-3" style="width: 110px; height: 110px; display: inline-block;">
+                            <div class="w-100 h-100 rounded-circle d-flex align-items-center justify-content-center" style="background: linear-gradient(135deg, #e8f0fe 0%, #d2e3fc 100%); font-size: 2.5rem; color: #1a73e8;">
+                                <i class="fa-solid fa-chalkboard-user"></i>
+                            </div>
+                        </div>
+
+                        <h3 class="fw-bold text-dark mb-2">@Model.ClassName</h3>
+                        <span class="badge bg-light text-primary border border-primary border-opacity-25 px-4 py-2 fs-6 rounded-pill shadow-sm">
+                            <i class="fa-solid fa-fingerprint me-1"></i> Mã Lớp: @Model.ClassId
+                        </span>
+                    </div>
+
+                    <hr class="text-muted opacity-25 mb-4">
+
+                    <h6 class="text-primary fw-bold text-uppercase mb-3" style="letter-spacing: 0.5px;"><i class="fa-solid fa-sitemap me-2"></i>Đơn vị quản lý</h6>
+                    <div class="bg-light p-4 rounded-3 border border-primary border-opacity-10">
+                        <ul class="list-unstyled mb-0">
+                            <li class="d-flex align-items-center">
+                                <div class="bg-white rounded d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 45px; height: 45px;">
+                                    <i class="fa-solid fa-building-columns text-info fs-5"></i>
+                                </div>
+                                <div>
+                                    <small class="text-muted d-block fw-semibold" style="font-size: 0.85rem;">Trực thuộc Khoa / Tổ</small>
+                                    <span class="fw-bold text-dark" style="font-size: 1.15rem;">
+                                        @(Model.Faculty?.FacultyName ?? "Chưa phân bổ")
+                                    </span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="d-flex justify-content-end mt-5 pt-4 border-top">
+                        <a asp-action="Edit" asp-route-id="@Model?.ClassId" class="btn text-dark px-5 py-2 fw-bold shadow-sm" style="background-color: #ffc107; border-radius: 10px; font-size: 1.05rem;">
+                            <i class="fa-solid fa-pen-to-square me-2"></i> CẬP NHẬT THÔNG TIN
+                        </a>
+                    </div>
+
                 </div>
             </div>
+
+        </div>
+    </div>
+</div> *@
+@model UniversityManagementSystem.Models.SchoolClass
+
+@{
+    ViewData["Title"] = "Chi tiết Lớp học";
+}
+
+<div class="container-fluid pt-4 pb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+
+            <div class="d-flex align-items-center mb-4">
+                <a asp-action="Index" class="btn btn-light shadow-sm text-secondary rounded-circle me-3" style="width: 40px; height: 40px; padding: 8px;">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </a>
+                <h3 class="text-primary mb-0 fw-bold">Hồ sơ Lớp học</h3>
+            </div>
+
+            <div class="card shadow-sm border-0" style="border-radius: 15px; overflow: hidden;">
+
+                <div class="bg-primary bg-gradient p-4 p-md-5 d-flex flex-column flex-sm-row align-items-center text-center text-sm-start">
+                    <div class="bg-white rounded-circle d-flex align-items-center justify-content-center shadow-sm mb-3 mb-sm-0 me-sm-4 flex-shrink-0" style="width: 90px; height: 90px; font-size: 2.5rem; color: #0d6efd;">
+                        <i class="fa-solid fa-chalkboard-user"></i>
+                    </div>
+                    <div>
+                        <h2 class="fw-bold text-white mb-2">@Model.ClassName</h2>
+                        <span class="badge bg-white text-primary px-3 py-2 fs-6 rounded-pill shadow-sm">
+                            <i class="fa-solid fa-fingerprint me-1"></i> Mã Lớp: @Model.ClassId
+                        </span>
+                    </div>
+                </div>
+
+                <div class="card-body p-4 p-md-5">
+                    <h6 class="text-primary fw-bold text-uppercase mb-3" style="letter-spacing: 0.5px;"><i class="fa-solid fa-sitemap me-2"></i>Đơn vị quản lý</h6>
+                    <div class="bg-light p-4 rounded-3 border border-primary border-opacity-10">
+                        <ul class="list-unstyled mb-0">
+                            <li class="d-flex align-items-center">
+                                <div class="bg-white rounded d-flex align-items-center justify-content-center shadow-sm me-3" style="width: 45px; height: 45px;">
+                                    <i class="fa-solid fa-building-columns text-info fs-5"></i>
+                                </div>
+                                <div>
+                                    <small class="text-muted d-block fw-semibold" style="font-size: 0.85rem;">Trực thuộc Khoa / Tổ</small>
+                                    <span class="fw-bold text-dark" style="font-size: 1.15rem;">
+                                        @(Model.Faculty?.FacultyName ?? "Chưa phân bổ")
+                                    </span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="d-flex justify-content-end mt-5 pt-4 border-top">
+                        <a asp-action="Edit" asp-route-id="@Model?.ClassId" class="btn text-dark px-5 py-2 fw-bold shadow-sm" style="background-color: #ffc107; border-radius: 10px; font-size: 1.05rem;">
+                            <i class="fa-solid fa-pen-to-square me-2"></i> CẬP NHẬT THÔNG TIN
+                        </a>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>

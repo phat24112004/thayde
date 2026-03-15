@@ -1,0 +1,151 @@
+﻿@{
+    Layout = null; // Tắt thanh menu chung của hệ thống
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đăng nhập hệ thống - EduGrade</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            /* Background gradient tinh tế có họa tiết */
+            background: linear-gradient(135deg, #eef2f3 0%, #ffffff 100%);
+            background-image: radial-gradient(#d1dcfb 1px, transparent 1px);
+            background-size: 20px 20px;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 420px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            /* Hiệu ứng bóng đổ Neumorphism */
+            box-shadow: 0 15px 35px rgba(26, 115, 232, 0.1), 0 5px 15px rgba(0,0,0,0.05);
+            border: 1px solid rgba(255,255,255,0.5);
+            overflow: hidden;
+            padding: 40px 30px;
+        }
+
+        .brand-logo {
+            width: 70px;
+            height: 70px;
+            background-color: #e8f0fe;
+            color: #1a73e8;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 20px;
+            box-shadow: 0 5px 15px rgba(26, 115, 232, 0.2);
+        }
+
+        .form-control {
+            border-radius: 10px;
+            padding: 12px 15px;
+            background-color: #f8faff;
+            border: 1px solid #d1dcfb;
+            font-weight: 500;
+        }
+
+            .form-control:focus {
+                border-color: #1a73e8;
+                box-shadow: 0 0 0 0.25rem rgba(26, 115, 232, 0.15);
+                background-color: #ffffff;
+            }
+
+        .input-group-text {
+            background-color: #f8faff;
+            border: 1px solid #d1dcfb;
+            border-right: none;
+            color: #888;
+            border-radius: 10px 0 0 10px;
+        }
+
+        .form-control.border-left-0 {
+            border-left: none;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .btn-login {
+            background-color: #f2994a;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 14px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+            .btn-login:hover {
+                background-color: #e68a3c;
+                transform: translateY(-2px);
+                box-shadow: 0 8px 20px rgba(242, 153, 74, 0.4);
+            }
+
+        .alert-custom {
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <div class="brand-logo">
+            <i class="fa-solid fa-school"></i>
+        </div>
+        <h3 class="text-center fw-bold" style="color: #1a73e8; margin-bottom: 5px;">EduGrade</h3>
+        <p class="text-center text-muted mb-4" style="font-size: 0.9rem;">Hệ thống Quản lý Điểm Học sinh</p>
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger text-center alert-custom py-2 shadow-sm">
+                <i class="fa-solid fa-circle-exclamation me-1"></i> @ViewBag.Error
+            </div>
+        }
+
+        <form asp-action="Index" asp-controller="Login" method="post">
+            <div class="mb-3">
+                <label class="form-label fw-bold text-secondary" style="font-size: 0.9rem;">Tài khoản truy cập</label>
+                <div class="input-group shadow-sm" style="border-radius: 10px;">
+                    <span class="input-group-text"><i class="fa-solid fa-user"></i></span>
+                    <input type="text" name="username" class="form-control border-left-0" placeholder="Nhập tên đăng nhập..." required autocomplete="off" />
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label fw-bold text-secondary" style="font-size: 0.9rem;">Mật khẩu</label>
+                <div class="input-group shadow-sm" style="border-radius: 10px;">
+                    <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
+                    <input type="password" name="password" class="form-control border-left-0" placeholder="Nhập mật khẩu..." required />
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-login w-100 mt-2">ĐĂNG NHẬP <i class="fa-solid fa-arrow-right ms-1"></i></button>
+        </form>
+
+        <div class="text-center mt-4">
+            <small class="text-muted">&copy; 2026 EduGrade System. All rights reserved.</small>
+        </div>
+    </div>
+
+</body>
+</html>

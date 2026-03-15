@@ -65,7 +65,7 @@ public partial class UniversityManagementDbContext : DbContext
             entity.HasKey(e => e.GradeId).HasName("PK__Grades__54F87A3785EB9823");
 
             entity.Property(e => e.GradeId).HasColumnName("GradeID");
-            entity.Property(e => e.Score).HasColumnType("decimal(4, 2)");
+            
             entity.Property(e => e.Semester).HasMaxLength(20);
             entity.Property(e => e.StudentId)
                 .HasMaxLength(20)

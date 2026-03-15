@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using UniversityManagementSystem.Models;
 
 namespace UniversityManagementSystem.Controllers
@@ -112,13 +113,15 @@ namespace UniversityManagementSystem.Controllers
                 return NotFound();
             }
 
+            // FIX QUAN TRỌNG: Gỡ chốt chặn danh sách Điểm để hệ thống cho phép lưu
+            ModelState.Remove("Grades");
+
             if (ModelState.IsValid)
             {
                 try
                 {
                     _context.Update(subject);
                     await _context.SaveChangesAsync();
-                    // Đặt ngay sau dòng await _context.SaveChangesAsync();
                     TempData["SuccessMessage"] = "Cập nhật thông tin môn học thành công!";
                 }
                 catch (DbUpdateConcurrencyException)
@@ -156,18 +159,40 @@ namespace UniversityManagementSystem.Controllers
         }
 
         // POST: Subjects/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(string id)
+        //{
+        //    var subject = await _context.Subjects.FindAsync(id);
+        //    if (subject != null)
+        //    {
+        //        _context.Subjects.Remove(subject);
+        //        await _context.SaveChangesAsync();
+        //        // Đặt ngay sau dòng await _context.SaveChangesAsync();
+        //        TempData["SuccessMessage"] = "Đã xóa môn học khỏi hệ thống!";
+        //    }
+        //    return RedirectToAction(nameof(Index));
+        //}
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteConfirmed(string id) // Giả sử SubjectId của bạn là string
         {
-            var subject = await _context.Subjects.FindAsync(id);
-            if (subject != null)
+            try
             {
-                _context.Subjects.Remove(subject);
-                await _context.SaveChangesAsync();
-                // Đặt ngay sau dòng await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = "Đã xóa môn học khỏi hệ thống!";
+                var subject = await _context.Subjects.FindAsync(id);
+                if (subject != null)
+                {
+                    _context.Subjects.Remove(subject);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Đã xóa Môn học thành công!";
+                }
             }
+            catch (DbUpdateException)
+            {
+                TempData["ErrorMessage"] = "Không thể xóa Môn học này! Hệ thống phát hiện đã có Sinh viên được nhập điểm cho môn này.";
+            }
+
             return RedirectToAction(nameof(Index));
         }
 

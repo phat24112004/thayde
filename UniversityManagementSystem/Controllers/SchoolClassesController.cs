@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using UniversityManagementSystem.Models;
 
 namespace UniversityManagementSystem.Controllers
@@ -82,7 +83,8 @@ namespace UniversityManagementSystem.Controllers
         // GET: SchoolClasses/Create
         public IActionResult Create()
         {
-            ViewData["FacultyId"] = new SelectList(_context.Faculties, "FacultyId", "FacultyId");
+            // Đổi tham số thứ 3 từ "FacultyId" thành "FacultyName"
+            ViewData["FacultyId"] = new SelectList(_context.Faculties, "FacultyId", "FacultyName");
             return View();
         }
 
@@ -118,7 +120,7 @@ namespace UniversityManagementSystem.Controllers
             {
                 return NotFound();
             }
-            ViewData["FacultyId"] = new SelectList(_context.Faculties, "FacultyId", "FacultyId", schoolClass.FacultyId);
+            ViewData["FacultyId"] = new SelectList(_context.Faculties, "FacultyId", "FacultyName", schoolClass.FacultyId);
             return View(schoolClass);
         }
 
@@ -180,18 +182,40 @@ namespace UniversityManagementSystem.Controllers
         }
 
         // POST: SchoolClasses/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //{
+        //    var schoolClass = await _context.SchoolClasses.FindAsync(id);
+        //    if (schoolClass != null)
+        //    {
+        //        _context.SchoolClasses.Remove(schoolClass);
+        //        await _context.SaveChangesAsync();
+        //        // Đặt ngay sau dòng await _context.SaveChangesAsync();
+        //        TempData["SuccessMessage"] = "Đã xóa lớp học khỏi hệ thống!";
+        //    }
+        //    return RedirectToAction(nameof(Index));
+        //}
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteConfirmed(int id) // Tùy chỉnh kiểu dữ liệu của ID cho khớp
         {
-            var schoolClass = await _context.SchoolClasses.FindAsync(id);
-            if (schoolClass != null)
+            try
             {
-                _context.SchoolClasses.Remove(schoolClass);
-                await _context.SaveChangesAsync();
-                // Đặt ngay sau dòng await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = "Đã xóa lớp học khỏi hệ thống!";
+                var schoolClass = await _context.SchoolClasses.FindAsync(id);
+                if (schoolClass != null)
+                {
+                    _context.SchoolClasses.Remove(schoolClass);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Đã xóa Lớp học thành công!";
+                }
             }
+            catch (DbUpdateException)
+            {
+                TempData["ErrorMessage"] = "Không thể xóa! Lớp này đang có Sinh viên theo học. Vui lòng chuyển Sinh viên sang lớp khác trước.";
+            }
+
             return RedirectToAction(nameof(Index));
         }
 

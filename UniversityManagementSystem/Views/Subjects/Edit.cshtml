@@ -4,36 +4,74 @@
     ViewData["Title"] = "Cập nhật Môn học";
 }
 
-<div class="container pt-4 mb-5">
+<div class="container-fluid pt-4 pb-5">
     <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow border-0">
-                <div class="card-header bg-warning text-dark">
-                    <h4 class="mb-0"><i class="fa-solid fa-pen-to-square me-2"></i>Cập nhật Môn học</h4>
+        <div class="col-md-8 col-lg-6">
+
+            <div class="d-flex align-items-center mb-3">
+                <a asp-action="Index" class="btn btn-light shadow-sm text-secondary rounded-circle me-3" style="width: 40px; height: 40px; padding: 8px;">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </a>
+                <h3 class="text-warning mb-0 fw-bold">Cập nhật Môn học</h3>
+            </div>
+
+            <div class="card shadow-sm border-0" style="border-radius: 15px; overflow: hidden;">
+                <div class="card-header bg-warning text-dark py-3">
+                    <h5 class="mb-0 fw-bold"><i class="fa-solid fa-pen-to-square me-2"></i>Chỉnh sửa thông tin</h5>
                 </div>
-                <div class="card-body p-4">
+
+                <div class="card-body p-4 p-md-5">
                     <form asp-action="Edit">
-                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-3 mb-4"></div>
 
-                        <div class="mb-3">
-                            <label asp-for="SubjectId" class="form-label fw-bold">Mã Môn học</label>
-                            <input asp-for="SubjectId" class="form-control bg-light" readonly />
-                            <small class="text-muted">Mã môn học không thể thay đổi.</small>
+                        <input type="hidden" asp-for="SubjectId" />
+
+                        <div class="bg-light p-4 rounded-3 border border-warning border-opacity-25 mb-4">
+
+                            <div class="mb-3">
+                                <label class="form-label fw-bold text-secondary">Mã Môn học</label>
+                                <div class="input-group shadow-sm" style="border-radius: 8px; overflow: hidden;">
+                                    <span class="input-group-text bg-light border-0"><i class="fa-solid fa-lock text-muted"></i></span>
+                                    <input value="@Model.SubjectId" class="form-control bg-light border-0 text-muted fw-bold" readonly />
+                                </div>
+                                <small class="text-muted mt-1 d-block" style="font-size: 0.75rem;">Mã môn học là định danh không thể thay đổi.</small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="SubjectName" class="form-label fw-bold text-secondary">Tên Môn học <span class="text-danger">*</span></label>
+                                <div class="input-group shadow-sm" style="border-radius: 8px; overflow: hidden;">
+                                    <span class="input-group-text bg-white border-0"><i class="fa-solid fa-book text-muted"></i></span>
+                                    <input asp-for="SubjectName" class="form-control border-0" placeholder="Ví dụ: Lập trình C# nâng cao" />
+                                </div>
+                                <span asp-validation-for="SubjectName" class="text-danger d-block mt-1" style="font-size: 0.85rem;"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="Credits" class="form-label fw-bold text-secondary">Số Tín chỉ / Số Tiết <span class="text-danger">*</span></label>
+                                <div class="input-group shadow-sm" style="border-radius: 8px; overflow: hidden;">
+                                    <span class="input-group-text bg-white border-0"><i class="fa-solid fa-calculator text-muted"></i></span>
+                                    <input asp-for="Credits" type="number" class="form-control border-0" placeholder="Ví dụ: 3" />
+                                </div>
+                                <span asp-validation-for="Credits" class="text-danger d-block mt-1" style="font-size: 0.85rem;"></span>
+                            </div>
+
                         </div>
 
-                        <div class="mb-4">
-                            <label asp-for="SubjectName" class="form-label fw-bold">Tên Môn học</label>
-                            <input asp-for="SubjectName" class="form-control" placeholder="Ví dụ: Lập trình C# nâng cao" />
-                            <span asp-validation-for="SubjectName" class="text-danger"></span>
-                        </div>
-
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                            <a asp-action="Index" class="btn btn-secondary me-2"><i class="fa-solid fa-arrow-left"></i> Quay lại</a>
-                            <button type="submit" class="btn btn-warning px-4 fw-bold"><i class="fa-solid fa-save"></i> Lưu thay đổi</button>
+                        <div class="d-flex justify-content-end mt-4 pt-3 border-top">
+                            <button type="submit" class="btn text-dark px-5 py-2 fw-bold shadow" style="background-color: #ffc107; border-radius: 10px; font-size: 1.1rem;">
+                                <i class="fa-solid fa-save me-2"></i> LƯU THAY ĐỔI
+                            </button>
                         </div>
                     </form>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

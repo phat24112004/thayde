@@ -1,111 +1,353 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿@* <!DOCTYPE html>
+<html lang="vi">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - UniversityManagementSystem</title>
-    <script type="importmap"></script>
-    <link rel="stylesheet" href="https://bootswatch.com/5/pulse/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <title>@ViewData["Title"] - UniManager</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/UniversityManagementSystem.styles.css" asp-append-version="true" />
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #f8f9fc;
+        }
+
+        /* Custom Navbar Đại học */
+        .navbar-custom {
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand {
+            letter-spacing: 1px;
+        }
+
+        .nav-link {
+            font-weight: 600;
+            color: rgba(255,255,255,0.85) !important;
+            transition: all 0.3s;
+            padding: 10px 15px !important;
+            margin: 0 5px;
+            border-radius: 8px;
+        }
+
+            .nav-link:hover {
+                color: #fff !important;
+                background-color: rgba(255,255,255,0.1);
+            }
+
+            .nav-link.active {
+                color: #f2994a !important;
+                background-color: rgba(255,255,255,0.1);
+            }
+
+        /* Tinh chỉnh cho điện thoại */
+        @@media (max-width: 991px) {
+            .navbar-collapse {
+                background: #203a43;
+                padding: 15px;
+                border-radius: 10px;
+                margin-top: 10px;
+            }
+        }
+
+        main {
+            min-height: 80vh;
+        }
+
+        footer {
+            background-color: #fff;
+            border-top: 1px solid #eaeaea;
+        }
+    </style>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
-            <div class="container-fluid">
-                <a class="navbar-brand fw-bold" asp-controller="Home" asp-action="Index">
-                    <i class="fa-solid fa-graduation-cap me-2"></i>UniManager
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+            <div class="container-fluid px-lg-5">
+
+                <a class="navbar-brand fw-bold fs-4 d-flex align-items-center" asp-controller="Home" asp-action="Index">
+                    <div class="bg-white rounded-circle d-flex align-items-center justify-content-center me-2 shadow-sm" style="width: 40px; height: 40px;">
+                        <i class="fa-solid fa-graduation-cap text-primary fs-4"></i>
+                    </div>
+                    <span>Uni<span style="color: #f2994a;">Manager</span></span>
                 </a>
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
-                    <span class="navbar-toggler-icon"></span>
+                <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#mainMenu">
+                    <i class="fa-solid fa-bars-staggered fs-2 text-white"></i>
                 </button>
 
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                <div class="collapse navbar-collapse" id="mainMenu">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="Index">
-                                <i class="fa-solid fa-house me-1"></i> Trang chủ
-                            </a>
+                            <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" ? "active" : "")" asp-controller="Home" asp-action="Index"><i class="fa-solid fa-house me-1"></i> Trang chủ</a>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa-solid fa-list-check me-1"></i> Danh mục Quản lý
-                            </a>
-                            <div class="dropdown-menu shadow">
-                                <a class="dropdown-item" asp-controller="Faculties" asp-action="Index">
-                                    <i class="fa-solid fa-school me-2 text-info"></i>Quản lý Khoa
-                                </a>
-                                <a class="dropdown-item" asp-controller="SchoolClasses" asp-action="Index">
-                                    <i class="fa-solid fa-chalkboard-user me-2 text-success"></i>Quản lý Lớp học
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" asp-controller="Students" asp-action="Index">
-                                    <i class="fa-solid fa-user-graduate me-2 text-warning"></i>Quản lý Sinh viên
-                                </a>
-                                <a class="dropdown-item" asp-controller="Grades" asp-action="Index">
-                                    <i class="fa-solid fa-star me-2 text-danger"></i>Quản lý Điểm
-                                </a>
-                                <a class="dropdown-item" asp-controller="Subjects" asp-action="Index">
-                                    <i class="fa-solid fa-book me-2 text-secondary"></i>Quản lý Môn học
-                                </a>
-                            </div>
+                        <li class="nav-item">
+                            <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Faculties" ? "active" : "")" asp-controller="Faculties" asp-action="Index"><i class="fa-solid fa-sitemap me-1"></i> Khoa / Tổ</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "SchoolClasses" ? "active" : "")" asp-controller="SchoolClasses" asp-action="Index"><i class="fa-solid fa-chalkboard-user me-1"></i> Lớp học</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Students" ? "active" : "")" asp-controller="Students" asp-action="Index"><i class="fa-solid fa-users me-1"></i> Sinh viên</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Subjects" ? "active" : "")" asp-controller="Subjects" asp-action="Index"><i class="fa-solid fa-book me-1"></i> Môn học</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Grades" ? "active" : "")" asp-controller="Grades" asp-action="Index"><i class="fa-solid fa-star-half-stroke me-1"></i> Điểm số</a>
                         </li>
                     </ul>
 
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#"><i class="fa-solid fa-user me-1"></i> Admin</a>
-                        </li>
-                    </ul>
+                    <div class="dropdown">
+                        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
+                            <img src="https://ui-avatars.com/api/?name=Admin&background=f2994a&color=fff" alt="Admin" width="40" height="40" class="rounded-circle me-2 border border-2 border-white shadow-sm">
+                            <span class="fw-bold">Admin</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-3" style="border-radius: 12px;">
+                            <li><a class="dropdown-item py-2" href="#"><i class="fa-solid fa-user-gear me-2 text-primary"></i>Hồ sơ</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item py-2 text-danger" href="#"><i class="fa-solid fa-right-from-bracket me-2"></i>Đăng xuất</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
+
+    <div class="container-fluid px-lg-5" style="padding-top: 90px;">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="text-center text-muted py-4 mt-auto">
         <div class="container">
-            &copy; 2026 - UniversityManagementSystem - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <p class="mb-0 fw-bold">&copy; 2026 - Hệ thống Quản lý Đại học</p>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        // Kiểm tra xem Controller có gửi thông báo Thành công không
-        @if (TempData["SuccessMessage"] != null)
-        {
-                <text>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
                 Swal.fire({
-                    icon: 'success',
                     title: 'Thành công!',
                     text: '@Html.Raw(TempData["SuccessMessage"])',
+                    icon: 'success',
                     showConfirmButton: false,
-                    timer: 2000 // Tự động đóng sau 2 giây
+                    timer: 2000,
+                    timerProgressBar: true
                 });
-                </text>
+            });
+        </script>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                Swal.fire({
+                    title: 'Lỗi!',
+                    text: '@Html.Raw(TempData["ErrorMessage"])',
+                    icon: 'error',
+                    confirmButtonColor: '#d33'
+                });
+            });
+        </script>
+    }
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html> *@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - UniManager</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #f8f9fc;
         }
 
-        // Kiểm tra xem Controller có gửi thông báo Lỗi không
-        @if (TempData["ErrorMessage"] != null)
-        {
-                <text>
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Ối, có lỗi rồi!',
-                    text: '@Html.Raw(TempData["ErrorMessage"])'
-                });
-                </text>
+        .navbar-custom {
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
-    </script>
+
+        .navbar-brand {
+            letter-spacing: 1px;
+        }
+
+        .nav-link {
+            font-weight: 600;
+            color: rgba(255,255,255,0.85) !important;
+            transition: all 0.3s;
+            padding: 10px 15px !important;
+            margin: 0 5px;
+            border-radius: 8px;
+        }
+
+            .nav-link:hover {
+                color: #fff !important;
+                background-color: rgba(255,255,255,0.1);
+            }
+
+            .nav-link.active {
+                color: #f2994a !important;
+                background-color: rgba(255,255,255,0.1);
+            }
+
+        @@media (max-width: 991px) {
+            .navbar-collapse {
+                background: #203a43;
+                padding: 15px;
+                border-radius: 10px;
+                margin-top: 10px;
+            }
+        }
+
+        main {
+            min-height: 80vh;
+        }
+
+        footer {
+            background-color: #fff;
+            border-top: 1px solid #eaeaea;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+            <div class="container-fluid px-lg-5">
+
+                <a class="navbar-brand fw-bold fs-4 d-flex align-items-center" asp-controller="Home" asp-action="Index">
+                    <div class="bg-white rounded-circle d-flex align-items-center justify-content-center me-2 shadow-sm" style="width: 40px; height: 40px;">
+                        <i class="fa-solid fa-graduation-cap text-primary fs-4"></i>
+                    </div>
+                    <span>Uni<span style="color: #f2994a;">Manager</span></span>
+                </a>
+
+                <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#mainMenu">
+                    <i class="fa-solid fa-bars-staggered fs-2 text-white"></i>
+                </button>
+
+                <div class="collapse navbar-collapse" id="mainMenu">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+
+                        @if (User.Identity != null && User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" ? "active" : "")" asp-controller="Home" asp-action="Index"><i class="fa-solid fa-house me-1"></i> Trang chủ</a>
+                            </li>
+
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Faculties" ? "active" : "")" asp-controller="Faculties" asp-action="Index"><i class="fa-solid fa-sitemap me-1"></i> Khoa / Tổ</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "SchoolClasses" ? "active" : "")" asp-controller="SchoolClasses" asp-action="Index"><i class="fa-solid fa-chalkboard-user me-1"></i> Lớp học</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Students" ? "active" : "")" asp-controller="Students" asp-action="Index"><i class="fa-solid fa-users me-1"></i> Sinh viên</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Subjects" ? "active" : "")" asp-controller="Subjects" asp-action="Index"><i class="fa-solid fa-book me-1"></i> Môn học</a>
+                                </li>
+                            }
+
+                            <li class="nav-item">
+                                <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Grades" ? "active" : "")" asp-controller="Grades" asp-action="Index"><i class="fa-solid fa-star-half-stroke me-1"></i> Điểm số</a>
+                            </li>
+                        }
+                    </ul>
+
+                    <div class="dropdown">
+                        @if (User.Identity == null || !User.Identity.IsAuthenticated)
+                        {
+                            <a asp-controller="Login" asp-action="Index" class="btn btn-warning fw-bold text-dark px-4" style="border-radius: 8px;">
+                                <i class="fa-solid fa-right-to-bracket me-2"></i> Đăng Nhập
+                            </a>
+                        }
+                        else
+                        {
+                            var fullName = User.FindFirst("FullName")?.Value ?? User.Identity.Name;
+                            var role = User.IsInRole("Admin") ? "Admin" : "Sinh viên";
+
+                            <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
+                                <img src="https://ui-avatars.com/api/?name=@fullName&background=f2994a&color=fff" alt="Avatar" width="40" height="40" class="rounded-circle me-2 border border-2 border-white shadow-sm">
+                                <div>
+                                    <div class="fw-bold" style="line-height: 1.2;">@fullName</div>
+                                    <small class="text-warning" style="font-size: 0.75rem;">@role</small>
+                                </div>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-3" style="border-radius: 12px;">
+                                <li><a class="dropdown-item py-2" href="#"><i class="fa-solid fa-user-gear me-2 text-primary"></i>Hồ sơ cá nhân</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item py-2 text-danger" asp-controller="Login" asp-action="Logout"><i class="fa-solid fa-right-from-bracket me-2"></i>Đăng xuất</a></li>
+                            </ul>
+                        }
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container-fluid px-lg-5" style="padding-top: 90px;">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="text-center text-muted py-4 mt-auto">
+        <div class="container">
+            <p class="mb-0 fw-bold">&copy; 2026 - Hệ thống Quản lý Đại học</p>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                Swal.fire({ title: 'Thành công!', text: '@Html.Raw(TempData["SuccessMessage"])', icon: 'success', showConfirmButton: false, timer: 2000, timerProgressBar: true });
+            });
+        </script>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                Swal.fire({ title: 'Lỗi!', text: '@Html.Raw(TempData["ErrorMessage"])', icon: 'error', confirmButtonColor: '#d33' });
+            });
+        </script>
+    }
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

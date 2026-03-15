@@ -1,57 +1,108 @@
 ﻿@model UniversityManagementSystem.Models.Grade
 
 @{
-    ViewData["Title"] = "Nhập Điểm";
+    ViewData["Title"] = "Nhập Điểm Mới";
 }
 
-<div class="container pt-4">
+<div class="container-fluid pt-4 pb-5">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow border-0">
-                <div class="card-header bg-danger text-white">
-                    <h4 class="mb-0"><i class="fa-solid fa-pen-nib me-2"></i>Nhập điểm Sinh viên</h4>
+        <div class="col-md-10 col-lg-8">
+
+            <div class="d-flex align-items-center mb-3">
+                <a asp-action="Index" class="btn btn-light shadow-sm text-secondary rounded-circle me-3" style="width: 40px; height: 40px; padding: 8px;">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </a>
+                <h3 class="text-primary mb-0 fw-bold">Nhập Điểm Sinh Viên</h3>
+            </div>
+
+            <div class="card shadow-sm border-0" style="border-radius: 15px; overflow: hidden;">
+                <div class="card-header bg-primary bg-gradient text-white py-3">
+                    <h5 class="mb-0 fw-bold"><i class="fa-solid fa-file-signature me-2"></i>Phiếu Điểm Chi Tiết</h5>
                 </div>
-                <div class="card-body p-4">
+
+                <div class="card-body p-4 p-md-5">
                     <form asp-action="Create">
-                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-3 mb-4"></div>
 
-                        <div class="row">
+                        <h6 class="text-primary fw-bold text-uppercase mb-3" style="letter-spacing: 0.5px;">1. Thông tin chung</h6>
+                        <div class="row mb-4">
                             <div class="col-md-6 mb-3">
-                                <label asp-for="StudentId" class="form-label fw-bold">Sinh viên</label>
-                                <select asp-for="StudentId" class="form-select" asp-items="ViewBag.StudentId"></select>
-                                @* <input asp-for="StudentId" class="form-control" placeholder="Nhập mã SV" /> *@
+                                <label asp-for="StudentId" class="form-label fw-bold text-secondary">Sinh viên <span class="text-danger">*</span></label>
+                                <div class="input-group shadow-sm" style="border-radius: 8px; overflow: hidden;">
+                                    <span class="input-group-text bg-light border-0"><i class="fa-solid fa-user-graduate text-muted"></i></span>
+                                    <select asp-for="StudentId" class="form-select border-0 bg-light" asp-items="ViewBag.StudentId">
+                                        <option value="">-- Chọn Sinh viên --</option>
+                                    </select>
+                                </div>
                             </div>
+
                             <div class="col-md-6 mb-3">
-                                <label asp-for="SubjectId" class="form-label fw-bold">Môn học</label>
-                                <select asp-for="SubjectId" class="form-select" asp-items="ViewBag.SubjectId"></select>
+                                <label asp-for="SubjectId" class="form-label fw-bold text-secondary">Môn học <span class="text-danger">*</span></label>
+                                <div class="input-group shadow-sm" style="border-radius: 8px; overflow: hidden;">
+                                    <span class="input-group-text bg-light border-0"><i class="fa-solid fa-book text-muted"></i></span>
+                                    <select asp-for="SubjectId" class="form-select border-0 bg-light" asp-items="ViewBag.SubjectId">
+                                        <option value="">-- Chọn Môn học --</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="ExamDate" class="form-label fw-bold text-secondary">Ngày thi</label>
+                                <input asp-for="ExamDate" class="form-control shadow-sm border-0 bg-light" type="date" style="border-radius: 8px;" />
+                                <span asp-validation-for="ExamDate" class="text-danger" style="font-size: 0.85rem;"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Semester" class="form-label fw-bold text-secondary">Học kỳ</label>
+                                <input asp-for="Semester" class="form-control shadow-sm border-0 bg-light" placeholder="VD: Học kỳ 1 - 2026" style="border-radius: 8px;" />
+                                <span asp-validation-for="Semester" class="text-danger" style="font-size: 0.85rem;"></span>
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-4 mb-3">
-                                <label asp-for="Score" class="form-label fw-bold">Điểm số</label>
-                                <input asp-for="Score" class="form-control" type="number" step="0.1" min="0" max="10" />
-                                <span asp-validation-for="Score" class="text-danger"></span>
+                        <h6 class="text-primary fw-bold text-uppercase mb-3" style="letter-spacing: 0.5px;">2. Cập nhật Điểm số</h6>
+                        <div class="bg-light p-4 rounded-3 border border-primary border-opacity-10 mb-4" style="box-shadow: inset 0 2px 5px rgba(0,0,0,0.02);">
+
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label asp-for="MidtermScore1" class="form-label fw-bold text-secondary">Giữa kì 1</label>
+                                    <input asp-for="MidtermScore1" class="form-control border-0 shadow-sm" type="number" step="0.01" min="0" max="10" placeholder="0.00" style="border-radius: 8px;" />
+                                    <span asp-validation-for="MidtermScore1" class="text-danger" style="font-size: 0.85rem;"></span>
+                                </div>
+
+                                <div class="col-md-4 mb-3">
+                                    <label asp-for="MidtermScore2" class="form-label fw-bold text-secondary">Giữa kì 2</label>
+                                    <input asp-for="MidtermScore2" class="form-control border-0 shadow-sm" type="number" step="0.01" min="0" max="10" placeholder="0.00" style="border-radius: 8px;" />
+                                    <span asp-validation-for="MidtermScore2" class="text-danger" style="font-size: 0.85rem;"></span>
+                                    <small class="text-muted" style="font-size: 0.75rem;">(Bỏ trống nếu môn chỉ có 1 bài GK)</small>
+                                </div>
+
+                                <div class="col-md-4 mb-3">
+                                    <label asp-for="FinalScore" class="form-label fw-bold text-danger">Điểm Cuối kì <span class="text-danger">*</span></label>
+                                    <input asp-for="FinalScore" class="form-control border-danger border-opacity-25 shadow-sm" type="number" step="0.01" min="0" max="10" placeholder="0.00" style="border-radius: 8px;" />
+                                    <span asp-validation-for="FinalScore" class="text-danger" style="font-size: 0.85rem;"></span>
+                                </div>
                             </div>
-                            <div class="col-md-4 mb-3">
-                                <label asp-for="ExamDate" class="form-label fw-bold">Ngày thi</label>
-                                <input asp-for="ExamDate" class="form-control" type="date" />
-                                <span asp-validation-for="ExamDate" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <label asp-for="Semester" class="form-label fw-bold">Học kỳ</label>
-                                <input asp-for="Semester" class="form-control" placeholder="Spring 2026" />
-                                <span asp-validation-for="Semester" class="text-danger"></span>
+
+                            <div class="alert alert-info mt-3 mb-0 py-2" style="font-size: 0.85rem; border-radius: 8px;">
+                                <i class="fa-solid fa-robot me-2"></i> <strong>Tự động:</strong> Hệ thống sẽ tính Điểm Tổng Kết (Hệ 10) và quy đổi sang Điểm Chữ (A, B, C, D, F) ngay sau khi bạn bấm Lưu.
                             </div>
                         </div>
 
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                            <a asp-action="Index" class="btn btn-secondary me-2"><i class="fa-solid fa-arrow-left"></i> Quay lại</a>
-                            <button type="submit" class="btn btn-danger px-4"><i class="fa-solid fa-save"></i> Lưu lại</button>
+                        <div class="d-flex justify-content-end mt-4 pt-3 border-top">
+                            <button type="submit" class="btn text-white px-5 py-2 fw-bold shadow" style="background-color: #f2994a; border-radius: 10px; font-size: 1.1rem;">
+                                <i class="fa-solid fa-floppy-disk me-2"></i> LƯU ĐIỂM SỐ
+                            </button>
                         </div>
                     </form>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+} 
